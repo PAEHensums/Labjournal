@@ -18,6 +18,8 @@ navbar:
         href: 20_lab2.html
       - text: "Week 3"
         href: 30_lab3.html
+      - text: "Week 4"
+        href: 40_lab4.html
     - text: "Final project"
       menu:
       - text: "Introduction"
