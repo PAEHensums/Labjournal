@@ -3,3 +3,406 @@ title: "30lab3"
 output: html_document
 ---
 
+## Logic of RSiena
+
+```{r}
+fpackage.check <- function(packages) {
+  lapply(packages, FUN = function(x) {
+    if (!require(x, character.only = TRUE)) {
+      install.packages(x, dependencies = TRUE)
+      library(x, character.only = TRUE)
+    }
+  })
+}
+
+fsave <- function(x, file = NULL, location = "./data/processed/") {
+  ifelse(!dir.exists("data"), dir.create("data"), FALSE)
+  ifelse(!dir.exists("data/processed"), dir.create("data/processed"), FALSE)
+  if (is.null(file))
+    file = deparse(substitute(x))
+  datename <- substr(gsub("[:-]", "", Sys.time()), 1, 8)
+  totalname <- paste(location, datename, file, ".rda", sep = "")
+  save(x, file = totalname)  #need to fix if file is reloaded as input name, not as x. 
+}
+
+fload <- function(filename) {
+  load(filename)
+  get(ls()[ls() != "filename"])
+}
+
+fshowdf <- function(x, ...) {
+  knitr::kable(x, digits = 2, "html", ...) %>%
+    kableExtra::kable_styling(bootstrap_options = c("striped", "hover")) %>%
+    kableExtra::scroll_box(width = "100%", height = "300px")
+}
+
+colorize <- function(x, color) {
+  sprintf("<span style='color: %s;'>%s</span>", color, x)
+}
+```
+
+## Customs functions
+
+```{r}
+
+#remove.packages("rlang")
+#install.packages("rlang")
+#library(rlang)
+
+packages = c("RSiena", "devtools", "igraph")
+fpackage.check(packages)
+devtools::install_github('JochemTolsma/RsienaTwoStep', build_vignettes=TRUE)
+pak::pak("user/JochemTolsma/RsienaTwoStep")
+packages = c("RsienaTwoStep")
+fpackage.check(packages)
+```
+
+## Meekijken bij Susanna, aantekeningen bij verhaal Jochem
+
+- Evolutie van netwerk, proces verklaren
+
+- Schat de regels van agents, sociale actoren, hoe zij hun gedrag/ties kunnen veranderen
+
+- Als we de regels correct hebben, leidt dat het netwerk dat we wel osberverne op T1
+
+  - Niet precies het netwerk van T1, zelfde netwerkstructuren en statistieken
+
+  - Dit zijn target statistics
+
+- Regels die we toekennen aan social agents, micro-theory of action (Coleman's BT)
+
+  - Gedrag afhankelijk van situatie
+
+  - Regels zelf kunnen veranderen over de loop van de tijd
+
+  - Maar regels kunnen ook constant blijven, maar niet altijd even relevant
+
+  - Recprociteit isa lleen relevant als je relaties hebt, bijvoorbeeld
+
+  - Regels kunnen alleen relevant zijn voor sommige mensen
+
+  - Start: nadenken over regels
+
+  - Via regels netwerken simuleren (= ABM)
+
+- Als we de regels begrijpen, snappen we het schatten in RSiena beter
+
+  - Discussie in RSiena, assumpties in software om te kunnen schatten
+
+  - Ministep-assumptie, alle netwerkveranderingen hakken we in stukjes in hele kleine stapjes, kleinst mogelijk (dat zijn mini-steps); daardoor alle veranderingen zijn aaneenschakeling van mini steps
+
+    - Een actor per keer, één verandering
+
+    - Dat is dus één beslissing over een tie-verandering OF gedragsverandering
+
+      - Tie-verandering: tie verbreken of maken (teglijkertijd beslissing over behouden)
+
+      - Claim: Dit is theorie-neutraal (Jochem: Dat is niet waar)
+
+        - Me welke groep wil ik vrienden worden?
+
+        - Ik wil alleen vrienden worden als ik met iedereen vrienden wordt? Dus beslissing niet over één tie, maar over alle ties. Of beslissing die je samen wil maken. Dat is een soort social network perspectief, ik ga alleen iemand helpen als jij ook helpt (interdependentie aan de voorkant van de beslissing)
+
+        - Dit doet het model allemaal niet,
+
+          - 1 agent, 1 beslissing
+
+            - Elke actie kan in stukjes gebroken worden tot het kleinst mogelijke stapje
+
+            - Eerst vrienden met A, dan vrienden met B
+
+            - Met mini-stepjes kom je in elk mogelijke configurarie
+
+            - Maar is dat het echte data-generation process (DGP)?
+
+            - Vervolgvraag: is dat erg? Volgens Jochem niet
+
+          - Zij zeggen: die theory of action komt pas tot uiting bij de assumptie dat elke persoon één beslissing neemt, soms neem je één beslissing over meerdere relaties (zie bovenstaand) (kan niet gemodelleerd worden in RSiena)
+
+        - Er zijn meerdere assumpties binnen die mini-steps
+
+          - Wie de volgende beslissing neemt, is onafhankelijk van wie de vorige beslissing nam (er is geen reactiviteit, maar dat is tegenwoordig ingebouw in RSiena)
+
+            - Rsiena simuleert mini-stepjes
+
+            - Wie mag er een mini-step maken? Dat is in principe random, onafhankelijk van of je betrokken bent geweest bij de vorige mini-step (vreemd, met de realiteit; denk bijvoorbeeld aan vriendschap of pesten)
+
+            - Wat er ook niet in zit, is simultaneous
+
+            - Netwerk is één groot ding; zou puur toeval kunnen zijn dat twee mensen tegelijkertijd een relatie maken (toeval/coördinatie, zit er niet in)
+
+              - Onderhandeling ook niet
+
+              - Beslissing welke tie; hoe evalueer je dat? Door te kijken naar je egocentrisch netwerk; als ik die tie-vorm, hoe ziet mijn egonet eruit? En vind ik dat fijner? Egoïstisch utility optimalization, for each individual
+
+              - Hypothese op micro-niveau
+
+              - Niet redeneren vanuit groepsbelang, wel utility optimalization aanpassen
+
+              - Daardoor kun je ook niet super strategisch handelen, investeren kan niet
+
+                - Vooruit kijken, agents zijn myopic (bijziend)
+
+                - Eerst volgende stap, eigen cocon
+
+                - Sluit aan op rational action theory (mijn utility, nu)
+
+                - Als je niet vooruit kunt kijken, kun je niet achteruit kijken (zou je erin kunnen bouwen, erin coderen)
+
+                - Kunt met iemand tie aangaan, verbreken, aangaan, verbreken (dat is ook best onrealistisch, zou je kunnen aanpassen via tijdsvariabele)
+
+- Verschil RSiena en regressieanalyse
+
+  - Regressieanalyse is puur statistisch
+
+  - Rsiena zijn theoretische assumpties, over hoe gedrag werkt
+
+- In-degree, hoeveel ties naar een actor
+
+- Out-degree, hoeveel ties eruit
+
+- Via de rate function, kun je aangeven wie een grotere kans heeft om een mini-stap te maken
+
+- Random function: gebruik sample()
+
+Als 4 omringd is door 9 anderen, dan heeft hij 10 keuzes (8 nieuwe ties, verbreken, en behouden)
+
+- Keuze maken tussen al deze opties, hoe evalueert ego deze opties? Hoe kiest ze?
+
+- Hier komt de micro-theory of action (netwerkstatistieken/effecten)
+
+  - Welke zijn we tegengekomen, als netwerkstructuur?
+
+    - Degree, egoniveau (hoeveel ties) & netwerk (density)
+
+    - Reciprociteit
+
+    - Voorbeeld degree, elke tie + 3
+
+    - Heel veel score 6, eentje 0, eentje 3
+
+    - Netwerken geëvalueerd, nu eentje kiezen
+
+      - Zoek alle maxima, meerdere? kies willekeurig
+
+      - Maar dan zit er geen stoichastische component meer in, deterministische component
+
+      - Heb je een volledig overzicht van je scores? Maak je altijd de juiste keuze? In het echt, niet (we willen een stoichastische component, willekeur, maar wel recht doen aan die verschillende evaluatiescores? Via wegen)
+
+      - Zie options[[1]]
+
+      - Kijk naar degree voor ego (4)
+
+      - Binnen optie 1 heeft ego 4 2 out-degrees
+
+      - Dat doe je voor alle netwerken
+
+      - Kan ook voor reciproce relaties via ts_recip)
+
+      - Nu hebben we twee statistieken, hoeveel transitive triads heeft ie na elke configuratie?
+
+      - Dit zijn de statistieken/effecten waar wij onze hypotheses over opstellen
+
+        - Onze hypotheses moeten zich vertalen naar deze statistieken
+
+        - Zie de manual voor de inhoud van de functies
+
+        - Dit gaat allemaal over relaties, gedrag bespreken we later (maar zelfde logica)
+
+  - Waarde toekennen aan netwerken, hoe belangrijk vind ik degree? hoe belangrijk is reciprocity?
+
+    - Dat zijn de parameters, dit is de output
+
+      - Ik denk dat degree/reciprocity
+
+      - H: effecten zijn niet nul (two-sided test)
+
+      - Uit het model, resultaat = degree = 3 (met standard error)
+
+        - 0 niet erin, significant effect
+
+    - Andere zijn effecten (zie vorige)
+
+      - Wat zou actor 4 belangrijk kunnen vinden? Sturen van ties (degrees) bijvoorbeeld
+
+        - Dit zijn de effectstructuren die in het model opgenomen worden
+
+        - Alleen je weet niet hoe belangrijk het effect is, dat moet het model schatten
+
+        - We hebben effecten bepaald, en twee parameters gevonden
+
+          - Statistic degree = -1 (waarde van een tie)
+
+          - Reciprociteit = 1.5
+
+          - We weten hoeveel ties en hoeveel reciprociteit
+
+          - En we weten welke waardes we hebben
+
+          - Dat moeten we optellen (3.2.4.)
+
+          - si = mijn statistiek
+
+          - i = voor actor i
+
+          - T = transpose (negeren we voor nu, we hebben veel effecten, gaan we draaien?)
+
+          - B = parameters (die klappen we uit) (uitkomst van je model)
+
+          - We vermeningvuldigen (hoeveel degrees + waarde degrees) + (aantal reciproce relaties \* waarde reciprociteit) (allemaal optellen)
+
+          - Voor optie 4 = .5
+
+            - Een tie = -1
+
+            - een reciproce relatie = 1.5
+
+            - Dus waarde = 0.5
+
+      - Model kiest parameters die (iedereen beslissingen maken op basis van deze regels)
+
+        - Grootste kans tot netwerk wat je observeert (stoichastisch)
+
+        - Lijkt op regressievergelijking (maar die zijn deterministisch, sum of squares, schat één parameter) terwijl RSiena probeert een netwerk na te bootsen (zoekt parameters die het beste aansluiten bij het echte netwerk, mini-steps)
+
+          - Ander getal = andere beslissingen
+
+  - Je kiest statistieken, model schat parameters (hoe belangrijk die dingen zijn)
+
+    - jij zegt wat belangrijk is, model bepaalt hoe belangrijk
+
+- Twee uitkomsten (-1 en 1.5)
+
+  - Op basis daarvan score voor ieder netwerk
+
+  - Doen we voor ieder netwerk
+
+  - Veel netwerken zelfde score
+
+    - Hoe ze geëvalueerd worden
+
+    - Netwerk met de hoogte score, meest likely
+
+    - Dat is hier het netwerk met .5
+
+    - We willen het niet deterministisch doen, dus we moeten wegen (kans-factor)
+
+    - We wegen via McFadden's choice function
+
+      - Dus welke waade ligt een kans? 0 en 1
+
+      - De totale kans moet 1 zijn
+
+      - Dus alle scores tussen 0 en 1
+
+      - En opgeteld = 1
+
+      - Dus we transformeren getallen naar waarde 0 - 1
+
+      - Dat doen we door de exponent te nemen (3.2.5)
+
+      - Om te zorgen dat de totale kans 1 is, delen we door som van alle getalen
+
+```{r}
+exp(-0.5) # dit werkt
+```
+
+- 0.6 / 7.4 (exp van netwerk 4, gedeeld door totale waarde) (8 \* 0.6 + 1 + 1.6) = 0.08 (x8)
+
+- Nu voor netwerk met waarde 0 = 1 / 7 = 0.14
+
+- Nu voor netwerk met waarde 0.5 = 0.22
+
+- De hoogste kans dat één van de opties wordt gekozen die het vaakst voorkomt
+
+- Dit is de choice functie
+
+- choice \<- sample(1:length(eval), size = 1, prob = exp(eval) / sum(exp(val)))
+
+  - Antwoord 10: 10de netwerk
+
+  - Nu is het netwerk anders voor iedereen
+
+  - Na het mini-stapje mag iemand anders een keuze maken
+
+  - Mark of chain (alle netwerken afhankelijk van elkaar)
+
+  - Dit doen we super vaak, maar wanneer stoppen we?
+
+    - Verschillende keuzes
+
+    - Kijk netwerk op T1 en T2
+
+    - Hoeveel tie-changes om van 1 naar 2 te komen? Zo vaak mag er gewisseld worden
+
+    - Wat je ook kan doen, maak een parameter van (probeer met 4 per persoon, 5 gemiddeld, etc)
+
+    - Wanneer kom je bij je netwerk? Je stopbeslissing mee modeleren, dat is de interpretatie van je rate parameter (model rate parameter = 2, dat er gemiddeld genomen 2 tie-changes zijn geweest per actor)
+
+      - Positieve parameter: groter de parameter, hoe sterker positief hoe belangrijker iemand die parameter vindt (voor één actor, en dat dan heel vaak, dus gemiddeld genomen vinden actors dus reciprociteit dus belangrijk bij een beslissing)
+
+      - Interpretatie op micro-theorie niveau (beslisregels voor actoren)
+
+      - Dat weten we niet of het belang is voor de macro-structuur op T2!! We weten dat individuen, als ze mogen keizen overmini-steps, dat ze dan reciprociet belangrijk vinden (maar niet of het de macro-structuur veroorzaakt)
+
+      - Negatieve waardes: proberen te voorkomen
+
+        - Twee statistieken, 4 en 5 (belangrijker) (netwerkeffect)
+
+        - Super lastig om met één tie-change maar één statistiek te veranderen (bij degree verander je altijd ook andere zaken in het netwerk, lastig om uit elkaar te trekken)
+
+          - Rule of thumb, niet beginnen met meest complexe statistieken
+
+          - Kleinere effecten zitten onder complexere effecten
+
+      - Degree soort intercept
+
+        - Hoeveel ties stuur je (out-degree, dat is effect degree)
+
+        - Een actor kan niet beslissen over in-degree, geen invloed hebben
+
+- Logistische regressie (zo gaat de interpreteer)
+
+  - In eindwerkstuk: effecten interpreteren, start eenvoudig
+
+  - Hij is positief of negatief
+
+    - Positief: vind dit fijn
+
+    - Negatief: vind dit niet fijn
+
+    - Positiever: netwerkeffect is belangrijker in beslissing
+
+    - Als ze ook in mijn beslissing een rol spelen!! Als niet van toepassing, dan beslissing niet beïnvloed (geef meer gewicht aan A, als A een rol speelt)
+
+- Degree effect = 0
+
+  - Maak tie, 0 out-degrees (0) [1\\1+1 = 0.5]
+
+  - Doe niks, 1 out-degree (0) (want 0 \* 1)
+
+  - Evaluatiefunctie invullen, exp(0) = 1
+
+  - Kans op tie-vormen is 0.5
+
+- Degree effect = -0.5
+
+  - Kans groter dat je geen tie vormt, dan dat je wel een tie vormt
+
+  - 1 / 1 + 0.6 = 0.6
+
+  - Dus kans op de andere = 0.4 (0.6 / 1.6)
+
+  - Als p(0.4) dat je een tie vormt, wat is dan de density in het netwerk als geheel? 0.4
+
+  - Meestal is degree parameter negatief, omdat het waarschijnlijker is dat er geen tie is dan dat er wel een tie is. Wat je dan vaak doet, dat je daar ratio's van maakt.
+
+    - Via exp() en dan is de uitkomst log-odds ratio
+
+    - Omzetten naar odds ratio (parameters)
+
+- Grootte, compositie: netwerkstatistieken
+
+  - Wat voor netwerkstatistiek: actors,
+
+  - Egokenmerk: kan ook een statistiek zijn die je opneemt (dingen die kunnen veranderen, of statistich zijn: dynamische/stabiele egokenmerken; kunnen kans beïnvloeden dat er een tie voorkomt)
