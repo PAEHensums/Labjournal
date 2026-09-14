@@ -406,3 +406,5 @@ exp(-0.5) # dit werkt
   - Wat voor netwerkstatistiek: actors,
 
   - Egokenmerk: kan ook een statistiek zijn die je opneemt (dingen die kunnen veranderen, of statistich zijn: dynamische/stabiele egokenmerken; kunnen kans beïnvloeden dat er een tie voorkomt)
+
+- Laat je de hypothese aansluiten op het mechanisme of de toetsing?
