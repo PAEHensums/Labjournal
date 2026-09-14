@@ -12,11 +12,11 @@ navbar:
       href: index.html
     - text: "My journal"
       menu:
-      - text: "Week1"
+      - text: "Week 1"
         href: 10_lab1.html
-      - text: "Week2"
+      - text: "Week 2"
         href: 20_lab2.html
-      - text: "Week3"
+      - text: "Week 3"
         href: 30_lab3.html
     - text: "Final project"
       menu:
