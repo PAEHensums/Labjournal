@@ -1,6 +1,7 @@
 ---
 title: "30_lab3"
 output: html_document
+bibliography: references.bib
 ---
 
 # Logic of RSiena
@@ -53,20 +54,15 @@ colorize <- function(x, color) {
 ## Download RSiena
 
 ```{r}
-
 #remove.packages("rlang")
 #install.packages("rlang")
 #library(rlang)
 
 packages = c("RSiena", "devtools", "igraph")
 fpackage.check(packages)
-devtools::install_github('JochemTolsma/RsienaTwoStep', build_vignettes=TRUE)
+#devtools::install_github('JochemTolsma/RsienaTwoStep', build_vignettes=TRUE)
 packages = c("RsienaTwoStep")
 fpackage.check(packages)
-```
-
-```{r}
-library(RsienaTwoStep)
 ```
 
 ## Meekijken bij Susanna, aantekeningen bij verhaal Jochem
@@ -697,11 +693,11 @@ myeff <- includeEffects(myeff, sameX, egoX, altX, interaction1 = "gender")
 ```
 
 ```{r}
-myAlgorithm <- sienaAlgorithmCreate(projname = "soc_init")
-(ans <- siena07(myAlgorithm, data = mydata, effects = myeff))
+#myAlgorithm <- sienaAlgorithmCreate(projname = "soc_init")
+#(ans <- siena07(myAlgorithm, data = mydata, effects = myeff))
 # (the outer parentheses lead to printing the obtained result on the screen) if necessary, estimate
 # further
-(ans <- siena07(myAlgorithm, data = mydata, effects = myeff, prevAns = ans, returnDeps = TRUE))
+#(ans <- siena07(myAlgorithm, data = mydata, effects = myeff, prevAns = ans, returnDeps = TRUE))
 
 # Stoichastische component (waardes verschillen iets)
 # rate parameter = per agent zijn er gemiddeld (!) 4 mini-steps
@@ -721,5 +717,5 @@ myAlgorithm <- sienaAlgorithmCreate(projname = "soc_init")
 # 8. vrouwen minder krijgen (analyseren vanuit laatste auteur)
 
 # object met schattingen
-ans
+#ans
 ```

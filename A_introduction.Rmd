@@ -1,5 +1,9 @@
 ---
 title: "A_introduction"
 output: html_document
+bibliography: references.bib
 ---
 
+## References
+
+@Borowski_2002

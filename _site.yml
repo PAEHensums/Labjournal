@@ -28,13 +28,15 @@ navbar:
         href: B_theory.html
       - text: "Data"
         href: C_data.html
+    - text: "Presentations"
+      menu:
 
   right:
   - icon: fab fa-github
     href: https://github.com/JochemTolsma/labjournal
 output:
   html_document:
-    theme: flatly
+    theme: readable
     highlight: default
     toc:  true
     toc_float: true
