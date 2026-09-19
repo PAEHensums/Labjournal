@@ -30,6 +30,8 @@ navbar:
         href: C_data.html
     - text: "Presentations"
       menu:
+      - text: "Articles & Research questions"
+        href: 1_presentation.html
 
   right:
   - icon: fab fa-github

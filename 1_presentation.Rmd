@@ -1,0 +1,11 @@
+---
+title: "1_presentation"
+output: html_document
+---
+
+<iframe src="Presentations/socialnetworks_presentation_1.pdf" 
+width="100%" 
+height="700px" 
+style="border: none;">
+</iframe>
+
