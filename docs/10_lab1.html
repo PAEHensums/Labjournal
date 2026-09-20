@@ -74,6 +74,28 @@ if (window.hljs) {
 }
 </style>
 
+<style type="text/css">
+/* for pandoc --citeproc since 2.11 */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
 
 <link rel="stylesheet" href="tweaks.css" type="text/css" />
 
@@ -430,17 +452,39 @@ div.tocify {
   addClassKlippyTo("pre.r, pre.markdown");
   addKlippy('right', 'top', 'auto', '1', 'Copy code', 'Copied!');
 </script>
-<p>Last compiled on september, 2026</p>
 <p><br></p>
+<div id="articles" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Articles</h1>
 <hr />
-<p>This is just an example page of your <span style="color: red;">lab
-journal</span>. You can journal the assignments of the first day
-here.</p>
+<p><span style="color: blue;">Article 1</span>.</p>
 <hr />
-<pre class="r test"><code>print(&quot;Hello Lab Journal&quot;)</code></pre>
-<pre class="test2"><code>#&gt; [1] &quot;Hello Lab Journal&quot;</code></pre>
+<iframe src="Presentations/Article1.pdf" width="100%" height="700xp" style="border:none;">
+</iframe>
+<p><span class="citation">Wang et al. (2026)</span></p>
+<p><span style="color: blue;">Article 2</span>.</p>
+<iframe src="Presentations/Article2.pdf" width="100%" height="700xp" style="border:none;">
+</iframe>
+<p><span class="citation">Rijsewijk van, Loes et al. (n.d.)</span></p>
+<p>Last compiled on september, 2026</p>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-RijsewijkVan2016" class="csl-entry">
+Rijsewijk van, Loes, Dijkstra, Jan Kornelis, Pattisellano, Kim,
+Steglich, Christian, and Veenstra, René. n.d. <em>Who Helps Whom?
+Investigating the Development of Adolescent Prosocial
+Relationships</em>. <a
+href="https://pure.rug.nl/ws/portalfiles/portal/33411970/SNARE_VanRijsewijk_DP16.pdf">https://pure.rug.nl/ws/portalfiles/portal/33411970/SNARE_VanRijsewijk_DP16.pdf</a>.
+</div>
+<div id="ref-Wang2026" class="csl-entry">
+Wang, Lingfei, Liuqing Jiang, Panqin Ye, and Yufang Bian. 2026.
+<span>“Seemingly Same but Actually Different: A Comparative Study of
+Class Friendship Networks and Support-Seeking Networks.”</span>
+<em>Current Psychology</em> 45 (13): 1172. <a
+href="https://doi.org/10.1007/s12144-026-09699-x">https://doi.org/10.1007/s12144-026-09699-x</a>.
+</div>
+</div>
+</div>
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIkpvdXJuYWwgMSINCiNiaWJsaW9ncmFwaHk6IHJlZmVyZW5jZXMuYmliDQphdXRob3I6ICJZb3VyIE5hbWUiDQotLS0NCg0KYGBge3IsIGdsb2JhbHNldHRpbmdzLCBlY2hvPUZBTFNFLCB3YXJuaW5nPUZBTFNFLCByZXN1bHRzPSdoaWRlJ30NCmxpYnJhcnkoa25pdHIpDQoNCmtuaXRyOjpvcHRzX2NodW5rJHNldChlY2hvID0gVFJVRSkNCm9wdHNfY2h1bmskc2V0KHRpZHkub3B0cz1saXN0KHdpZHRoLmN1dG9mZj0xMDApLHRpZHk9VFJVRSwgd2FybmluZyA9IEZBTFNFLCBtZXNzYWdlID0gRkFMU0UsY29tbWVudCA9ICIjPiIsIGNhY2hlPVRSVUUsIGNsYXNzLnNvdXJjZT1jKCJ0ZXN0IiksIGNsYXNzLm91dHB1dD1jKCJ0ZXN0MiIpKQ0Kb3B0aW9ucyh3aWR0aCA9IDEwMCkNCnJnbDo6c2V0dXBLbml0cigpDQoNCmNvbG9yaXplIDwtIGZ1bmN0aW9uKHgsIGNvbG9yKSB7c3ByaW50ZigiPHNwYW4gc3R5bGU9J2NvbG9yOiAlczsnPiVzPC9zcGFuPiIsIGNvbG9yLCB4KSB9DQoNCmBgYA0KDQpgYGB7ciBrbGlwcHksIGVjaG89RkFMU0UsIGluY2x1ZGU9VFJVRX0NCmtsaXBweTo6a2xpcHB5KHBvc2l0aW9uID0gYygndG9wJywgJ3JpZ2h0JykpDQoja2xpcHB5OjprbGlwcHkoY29sb3IgPSAnZGFya3JlZCcpDQoja2xpcHB5OjprbGlwcHkodG9vbHRpcF9tZXNzYWdlID0gJ0NsaWNrIHRvIGNvcHknLCB0b29sdGlwX3N1Y2Nlc3MgPSAnRG9uZScpDQpgYGANCg0KTGFzdCBjb21waWxlZCBvbiBgciBmb3JtYXQoU3lzLnRpbWUoKSwgJyVCLCAlWScpYA0KDQo8YnI+DQoNCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQ0KDQpUaGlzIGlzIGp1c3QgYW4gZXhhbXBsZSBwYWdlIG9mIHlvdXIgYHIgY29sb3JpemUoImxhYiBqb3VybmFsIiwgInJlZCIpYC4gWW91IGNhbiBqb3VybmFsIHRoZSBhc3NpZ25tZW50cyBvZiB0aGUgZmlyc3QgZGF5IGhlcmUuDQoNCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQ0KDQpgYGB7cn0NCnByaW50KCJIZWxsbyBMYWIgSm91cm5hbCIpDQpgYGANCg==</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIkpvdXJuYWwgMSINCiNiaWJsaW9ncmFwaHk6IHJlZmVyZW5jZXMuYmliDQphdXRob3I6ICJZb3VyIE5hbWUiDQpiaWJsaW9ncmFwaHk6IHJlZmVyZW5jZXMuYmliDQotLS0NCg0KYGBge3IsIGdsb2JhbHNldHRpbmdzLCBlY2hvPUZBTFNFLCB3YXJuaW5nPUZBTFNFLCByZXN1bHRzPSdoaWRlJ30NCmxpYnJhcnkoa25pdHIpDQoNCmtuaXRyOjpvcHRzX2NodW5rJHNldChlY2hvID0gVFJVRSkNCm9wdHNfY2h1bmskc2V0KHRpZHkub3B0cz1saXN0KHdpZHRoLmN1dG9mZj0xMDApLHRpZHk9VFJVRSwgd2FybmluZyA9IEZBTFNFLCBtZXNzYWdlID0gRkFMU0UsY29tbWVudCA9ICIjPiIsIGNhY2hlPVRSVUUsIGNsYXNzLnNvdXJjZT1jKCJ0ZXN0IiksIGNsYXNzLm91dHB1dD1jKCJ0ZXN0MiIpKQ0Kb3B0aW9ucyh3aWR0aCA9IDEwMCkNCnJnbDo6c2V0dXBLbml0cigpDQoNCmNvbG9yaXplIDwtIGZ1bmN0aW9uKHgsIGNvbG9yKSB7c3ByaW50ZigiPHNwYW4gc3R5bGU9J2NvbG9yOiAlczsnPiVzPC9zcGFuPiIsIGNvbG9yLCB4KSB9DQoNCmBgYA0KDQpgYGB7ciBrbGlwcHksIGVjaG89RkFMU0UsIGluY2x1ZGU9VFJVRX0NCmtsaXBweTo6a2xpcHB5KHBvc2l0aW9uID0gYygndG9wJywgJ3JpZ2h0JykpDQoja2xpcHB5OjprbGlwcHkoY29sb3IgPSAnZGFya3JlZCcpDQoja2xpcHB5OjprbGlwcHkodG9vbHRpcF9tZXNzYWdlID0gJ0NsaWNrIHRvIGNvcHknLCB0b29sdGlwX3N1Y2Nlc3MgPSAnRG9uZScpDQpgYGANCg0KPGJyPg0KDQojIEFydGljbGVzDQoNCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQ0KDQpgciBjb2xvcml6ZSgiQXJ0aWNsZSAxIiwgImJsdWUiKWAuDQoNCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQ0KDQo8aWZyYW1lIHNyYz0iUHJlc2VudGF0aW9ucy9BcnRpY2xlMS5wZGYiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjcwMHhwIiBzdHlsZT0iYm9yZGVyOm5vbmU7Ij4NCg0KPC9pZnJhbWU+DQoNCkBXYW5nMjAyNg0KDQpgciBjb2xvcml6ZSgiQXJ0aWNsZSAyIiwgImJsdWUiKWAuDQoNCjxpZnJhbWUgc3JjPSJQcmVzZW50YXRpb25zL0FydGljbGUyLnBkZiIgd2lkdGg9IjEwMCUiIGhlaWdodD0iNzAweHAiIHN0eWxlPSJib3JkZXI6bm9uZTsiPg0KDQo8L2lmcmFtZT4NCg0KQFJpanNld2lqa1ZhbjIwMTYNCg0KTGFzdCBjb21waWxlZCBvbiBgciBmb3JtYXQoU3lzLnRpbWUoKSwgJyVCLCAlWScpYA0K</div>
 
 
 </div>
