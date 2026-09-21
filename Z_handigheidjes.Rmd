@@ -58,6 +58,5 @@ information <- info |>
 
 #print(information[,"URL"])
 
-View(information)
-information
+tibble(information)
 ```
