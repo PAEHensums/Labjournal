@@ -13,7 +13,7 @@ output: html_document
 
 ## Google Slides version
 
-\<iframe src="[https://docs.google.com/presentation/d/e/2PACX-1vReOddS-Rv1RpxNJeoRuMjz-Bn-sDeDoT04tVIMkqhRS2xNCUePiPmlVGYqqflBtuWvmI25rJxWu4Kq/pubembed?start=false&loop=false&delayms=3000"](https://docs.google.com/presentation/d/e/2PACX-1vReOddS-Rv1RpxNJeoRuMjz-Bn-sDeDoT04tVIMkqhRS2xNCUePiPmlVGYqqflBtuWvmI25rJxWu4Kq/pubembed?start=false&loop=false&delayms=3000%22) frameborder="0" width="960" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"\>
+\<iframe src="personal link" frameborder="0" width="960" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"\>
 
 \</iframe\>
 
