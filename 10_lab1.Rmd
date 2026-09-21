@@ -27,11 +27,7 @@ klippy::klippy(position = c('top', 'right'))
 
 # Articles
 
-------------------------------------------------------------------------
-
-`r colorize("Article 1", "blue")`.
-
-------------------------------------------------------------------------
+## Article 1:
 
 <iframe src="Presentations/Article1.pdf" width="100%" height="700xp" style="border:none;">
 
@@ -39,12 +35,16 @@ klippy::klippy(position = c('top', 'right'))
 
 @Wang2026
 
-`r colorize("Article 2", "blue")`.
+<br>
+
+## Article 2: 
 
 <iframe src="Presentations/Article2.pdf" width="100%" height="700xp" style="border:none;">
 
 </iframe>
 
-@RijsewijkVan2016
+@Rijsewijk2016
+
+<br>
 
 Last compiled on `r format(Sys.time(), '%B, %Y')`
