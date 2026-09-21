@@ -33,9 +33,7 @@ navbar:
       - text: "Articles & Research questions"
         href: 1_presentation.html
     - text: "Handigheidjes"
-      menu:
-      - text: ":)"
-        href: Z_handigheidjes.html
+      href: Z_handigheidjes.html
 
   right:
   - icon: fab fa-github

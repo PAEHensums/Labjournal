@@ -129,8 +129,6 @@ set.seed(2345)
 
 l <- layout_with_mds(g)  # https://igraph.org/r/doc/layout_with_mds.html
 plot(g, layout = l)
-
-
 ```
 
 ```{r}
@@ -340,4 +338,9 @@ information <- info |>
 print(information[,"URL"])
 
 View(information)
+```
+
+```{r}
+library(igraph)
+?igraph()
 ```
