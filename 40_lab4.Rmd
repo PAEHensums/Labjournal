@@ -5,4 +5,339 @@ output: html_document
 
 # Week 4
 
-## ..
+## Data visualisations
+
+- See SNASS Chapter 9
+
+### Create an igraph object
+
+```{r}
+require(igraph)
+g <- make_graph("Zachary")
+plot(g)
+
+
+# My image is not the same as the one in the book
+# So there's an algorithm underlying the calculation (random component)
+# Centre of the figure determined based on popularity
+# relations are undirected
+# is that the default of igraph or because of the data?
+```
+
+### Inspect Adjacency Matrix
+
+- G is an igraph object
+
+```{r}
+gmat <- as_adjacency_matrix(g, type = "both", sparse = FALSE)
+#gmat
+
+isSymmetric(gmat) # undirected
+```
+
+### Descriptives
+
+```{r}
+# SIZE
+# number of nodes
+vcount(g)
+# number of edges
+ecount(g)
+
+# DEGREE
+igraph::degree(g)
+hist(table(degree(g)), xlab='indegree', main= 'Histogram of indegree')
+
+# TRANSITIVITY
+igraph::transitivity(g, type = c("localundirected"), isolates = c("NaN", "zero"))
+
+# BETWEENNESS
+igraph::betweenness(g, directed = FALSE) # shortest path length between two actors and how often is actor A included in the path?
+
+# standardiseren is handig als je meerdere netwerken met elkaar vergelijkt
+```
+
+- Emphasize notes via colour or size (change 'u-pallete' depending on level of betweenness)
+
+- Or change the lay-out to highlight the notes with high levels of betweenness
+
+```{r}
+library(pander)
+
+igraph::dyad_census(g) 
+
+igraph::triad_census(g)
+
+# I will use sna because it shows the names of the triads as well
+pander(sna::triad.census(gmat))
+unloadNamespace("sna")  
+# Detach this package again, otherwise it will interfere with all kind of functions from igraph
+
+# Transitivity at the netwerk level, number of closed triads of all triads that could be closed (all triad configurations consisting of two triads)
+
+# Er zijn drie opties mogelijk voor het sluiten van 201 (AB-C, AC-B, BC-A)
+# Als we 201 sluiten, dan waren er drie opties voorafgaand
+# Er zijn 393 gesloten (3 gesloten)
+
+# Definitie transitiviteit
+# Hoeveel triades zijn er gesloten (45 * 3) / 
+# totaal gesloten netwerken OF hadden gesloten kunnen worden ((45 * 3) + 393)
+
+igraph::transitivity(g, type = "global")
+sna::gtrans(gmat)
+
+triad_g <- data.frame(sna::triad.census(gmat))
+
+transitivity_g <- (3 * triad_g$X300)/(triad_g$X201 + 3 * triad_g$X300)
+transitivity_g
+
+# reciproce relaties tel je twee keer (*2)
+```
+
+- Transitiviteit
+
+  - Lokaal: beredeneerd vanuit ego
+
+  - Globaal: netwerkniveau
+
+  - Om netwerken te vergelijken: zelfde aantal vrienden maar in netwerk A zijn er driehoekjes terwijl netwerk B minder hecht is, omdat er geen transitiviteit is
+
+### Netwerk visualisation
+
+```{r}
+# changing V
+V(g)$size = betweenness(g, normalized = T, directed = FALSE) * 60 + 10
+
+# V = vertices (nodes)
+# E = edges
+# normaliseren
+# * 60 + 10 (om tot een goede grootte te komen)
+# * 60 (omdat betweenness score tussen 0 & 1)
+# + 10 (omdat anders mensen zonder betweenness geen bolletje krijgen)
+
+# after some trial and error
+plot(g, mode = "undirected")
+
+# vooraf grootte plotwindow definiëren
+# volledig A4 size is een beginpunt
+# en dan alle plaatjes maken
+# wegschijven als .PNG
+```
+
+```{r}
+set.seed(2345)
+
+l <- layout_with_mds(g)  # https://igraph.org/r/doc/layout_with_mds.html
+plot(g, layout = l)
+
+
+```
+
+```{r}
+# Little further apart (manually)
+
+l  # let us take a look at the coordinates
+l[1, 1] <- 4
+l[34, 1] <- -3.5
+plot(g, layout = l)
+
+# plaatje met twee nodes aan de buitenkant (trekken beide)
+# plaatje laat polarisatie zien
+# als je zo'n figuur in een aritkel publiceert, altijd benoemen dat 1 en 34 handmatig aan de buitenkant zijn geplaatst om te illustreren wat er wordt gevonden (anders neight het naar datamanipulatie)
+# Take-home message: plaatjes zijn niet neutraal
+```
+
+```{r}
+plot(g, layout = l, margin = c(0, 0, 0, 0))
+legend(x = -2, y = -1.5, c("Note: the position of nodes 1 and 34 have been set by Jochem Tolsma \n for visualisation purposes only and do not reflect network properties"),
+                                                  bty = "n", cex = 0.8)
+
+```
+
+### Twittersphere
+
+```{r}
+load("./data/twitter_20190919.RData")  
+#str(twitter_20190919, 1)
+```
+
+```{r}
+testm <- matrix(NA, nrow = 4, ncol = 4)
+testm
+class(testm)
+
+testm[1,] <- c(0,1,NA,1)
+testm[3,] <- c(0,1,NA,1)
+testm[4,] <- c(0,1,NA,0)
+testm
+
+is.na(testm)
+class(testm)
+
+mrow <- rowSums(is.na(testm)) == nrow(testm)
+mcol <- colSums(is.na(testm)) == nrow(testm)
+
+mrow & mcol 
+mtotal <- which(mrow & mcol)
+# stel 2, dan weet je rij 2 en column 2 kunnen uit de data
+
+which(mrow) # welke rij willen we vervangen
+which(mcol) # welke kolom willen we vervangen
+
+testm[which(mrow),] <- 0
+testm[,which(mcol)] <- 0
+ 
+testm[is.na(testm)] <- 0 # voor het plotten moeten we NA = 0 (niet voor Rsiena)
+testm # dit is een botte bijl, voor plotten prima maar voor Rsiena minder
+```
+
+## Webscraping (Chapter 9 in SNASS)
+
+(1) Grootschalig (2) Time-stamped data (3) Observeren (informatie niet in surveys)
+
+- Informatie van internet afhalen op geautomatiseerde wijze
+
+- Data-sharing
+
+  - Met toestemming whatsapp data analyseren (netwerken construeren)
+
+  - Bijvoorbeeld of telefoons in elkaars buurt zijn geweest
+
+    - Of de telefoon van A een bluetooth verzoek naar de telefoon van B heeft gestuurd
+
+- Objectieve data (geobserveerd) in plaats van surveydata (naar eigen zeggen)
+
+- Hoe sample je deze data? Wat is de populatie van berichten? Wanneer stop je?
+
+  - Als je wilt onderzoeken wie naar de Efteling gaat
+
+  - Via het onderzoeken van social-media posts
+
+  - Dan mis je mensen die niet posten (selectiviteit)
+
+- Ethics
+
+  - Mag je geautomatiseerd informatie van het internet halen? Websites hebben vaak robot-exclusion protocollen die geautomatiseerde dataverzameling verbieden
+
+  - Mag het van de eigenaar? Mag het van de wet? *Wat vind je zelf (belangrijkste)?*
+
+    - Kijk naar de beroepscode van sociologen & wetenschappelijke integriteit
+
+    - Voor een paper, zorg dat je langs een ethische commissie gaat
+
+### Handmatig
+
+### Data vragen aan eigenaar
+
+### APIs (websites bedoeld om te scrapen)
+
+### Webscraping (AKA crawling technieken) (voorbeeld: NOS scrapen)
+
+```{r}
+require(rvest)
+require(xml2)
+```
+
+- Ga naar NOS.nl en ga naar 'Zoeken'
+
+- Zie de URL
+
+- q=jochem+tolsma (zoektermen)
+
+- & page=1 (aantal pagina's)
+
+- <https://nos.nl/zoeken?q=gendergelijkheid&page=1>
+
+- Rechtermuisknop, inspecteren (open DevTools), Elements
+
+- Een webpagina heeft een hierarchische structuur
+
+  - Opgebouwd, subonderdelen met eigenschappen, namen, IDs
+
+- Kijk bij 'body'
+
+  - Bestaat uit een titel, bovenkant, main, en footer (onderpagina)
+
+  - Meestal zit waar je geïntereseerd bent in *main*
+
+    - Daarbinnen zoek je *div* en uiteindelijk je onderdeel
+
+    - Je zoekt een soort table (UL) of list (LI) in UL
+
+    - Zie een href, zoek de time-stap, zoek titel
+
+```{r}
+library(rvest)
+library(tidyverse)
+
+url <- "https://nos.nl/zoeken?q=gendergelijkheid&page=1"
+nos <- read_html(url)
+nos
+
+# bekijk functies in een package
+# ?rvest (zie index)
+
+# opslaan als XML noteset (met subnotes, want hierarchische webpagina)
+
+lijst <- nos %>% html_elements("main") %>%
+  html_elements("ul") %>% # eerste ul is wat we nodig hebben
+  html_elements("li") # daarbinnen willen we alle list-elementen
+
+# html_children() wat zit eronder?
+lijst[1] %>% html_children
+lijst[1] %>% html_children %>% html_children
+
+lijst[1] %>% html_children() %>% html_attrs() # kijk welke elementen in dit object
+artikel1 <- lijst[1] %>% html_children() %>% html_attr(name = "href") # zo pak je website
+# href is de link
+# we hebben het nu geretrieved, moeten het nog opslaan in een databestand
+
+# weer een website van maken: 
+paste0("https://nos.nl", artikel1)
+
+time <- nos %>% html_elements("main") %>%
+  html_elements("ul") %>% 
+  html_elements("li") %>%
+  html_elements("time") # om tijd informatie te retrieven
+
+time[1] %>% html_attr(name = "datetime") # hier 
+#?html_text()
+
+# <> hier tussenin staat een html tag
+
+# html_element() zoeken op basis van css of xpath
+# ga naar web browser en website, klik op het juiste element 
+# bijvoorbeeld <div class> en dan kies je copy xPath of copy Full xpath
+# /html/body/div/main/div[2] 
+
+titel <- nos |>
+  html_elements(".kYBrrl") |>
+  html_text()
+titel
+
+link <- nos |> html_elements("main") |> 
+  html_elements("ul") |>
+  html_elements("li") |>
+  html_elements("a") |>
+  html_attr(name = "href")
+link
+
+data <- nos |>
+  html_elements("time") |>
+  html_text()
+data
+
+length(titel)
+length(data)
+length(link)
+
+info <- tibble(titel, data, link[1:20])
+
+information <- info |>
+  rename(Title = titel, Date = data, URL = `link[1:20]`) |>
+  mutate(URL = paste0("https://nos.nl", URL))
+
+print(information[,"URL"])
+
+View(information)
+```

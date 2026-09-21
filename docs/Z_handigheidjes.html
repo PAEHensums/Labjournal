@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Z_handigheidjes</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/readable.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-6.5.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+
+<link rel="stylesheet" href="tweaks.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    My journal
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="10_lab1.html">Week 1</a>
+    </li>
+    <li>
+      <a href="20_lab2.html">Week 2</a>
+    </li>
+    <li>
+      <a href="30_lab3.html">Week 3</a>
+    </li>
+    <li>
+      <a href="40_lab4.html">Week 4</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Final project
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="A_introduction.html">Introduction</a>
+    </li>
+    <li>
+      <a href="B_theory.html">Theory</a>
+    </li>
+    <li>
+      <a href="C_data.html">Data</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Presentations
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="1_presentation.html">Articles &amp; Research questions</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Handigheidjes
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Z_handigheidjes.html">:)</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/JochemTolsma/labjournal">
+    <span class="fab fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Z_handigheidjes</h1>
+
+</div>
+
+
+<div id="pdf-version" class="section level2" number="1">
+<h2><span class="header-section-number">1</span> PDF version</h2>
+<p>&lt;iframe src=“Presentations/socialnetworks_presentation_1.pdf”
+width=“100%” height=“700xp” style=“border:none;”&gt;</p>
+<p>&lt;/iframe&gt;</p>
+<p><br></p>
+<p><br></p>
+</div>
+<div id="google-slides-version" class="section level2" number="2">
+<h2><span class="header-section-number">2</span> Google Slides
+version</h2>
+<p>&lt;iframe src=“<a
+href="https://docs.google.com/presentation/d/e/2PACX-1vReOddS-Rv1RpxNJeoRuMjz-Bn-sDeDoT04tVIMkqhRS2xNCUePiPmlVGYqqflBtuWvmI25rJxWu4Kq/pubembed?start=false&amp;loop=false&amp;delayms=3000%22">https://docs.google.com/presentation/d/e/2PACX-1vReOddS-Rv1RpxNJeoRuMjz-Bn-sDeDoT04tVIMkqhRS2xNCUePiPmlVGYqqflBtuWvmI25rJxWu4Kq/pubembed?start=false&amp;loop=false&amp;delayms=3000”</a>
+frameborder=”0” width=“960” height=“569” allowfullscreen=“true”
+mozallowfullscreen=“true” webkitallowfullscreen=“true”&gt;</p>
+<p>&lt;/iframe&gt;</p>
+</div>
+<div id="webscrapen" class="section level2" number="3">
+<h2><span class="header-section-number">3</span> Webscrapen</h2>
+<pre class="r"><code>library(rvest)
+library(tidyverse)
+
+url &lt;- &quot;https://nos.nl/zoeken?q=gendergelijkheid&amp;page=1&quot;
+nos &lt;- read_html(url)
+nos</code></pre>
+<pre><code>## {html_document}
+## &lt;html data-theme=&quot;light&quot; lang=&quot;nl&quot;&gt;
+## [1] &lt;head&gt;\n&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-8&quot;&gt;\n&lt;meta charset=&quot;u ...
+## [2] &lt;body&gt;\n&lt;div id=&quot;__next&quot;&gt;\n&lt;nav data-tracking=&quot;nestType1=header&quot; aria-label=&quot;Hoofdnavigatie&quot;  ...</code></pre>
+<pre class="r"><code>titel &lt;- nos |&gt;
+  html_elements(&quot;.kYBrrl&quot;) |&gt;
+  html_text()
+titel</code></pre>
+<pre><code>##  [1] &quot;Nederland zakt verder weg op wereldwijde ranglijst voor gendergelijkheid&quot;              
+##  [2] &quot;Steeds meer Amerikaanse goede doelen vluchten naar Nederland om Trump&quot;                 
+##  [3] &quot;Moeders gaan meer verdienen als de vader met verlof gaat, toont nieuw onderzoek&quot;       
+##  [4] &quot;Sportraad richt zich op één advies voor 2027: focus op positie van vrouwen in de sport&quot;
+##  [5] &quot;Zevende dode vrouw gevonden bij Johannesburg, politie waarschuwt vrouwen&quot;              
+##  [6] &quot;Negende dode vrouw gevonden in Zuid-Afrika in dezelfde regio bij Johannesburg&quot;         
+##  [7] &quot;Italiaanse politica Emma Bonino overleden, voorvechter voor vrouwenrechten &quot;           
+##  [8] &quot;Niet prinsessen maar geadopteerde mannen moeten Japans keizerlijk huis redden&quot;         
+##  [9] &quot;Andrew Tate en broer aangehouden in Miami om verkrachting en geweld &quot;                  
+## [10] &quot;Franse rechtspraak worstelt met zaken over partnergeweld: &#39;Nog lange weg te gaan&#39;&quot;     
+## [11] &quot;Pride Amsterdam genomineerd voor erfgoedlijst Unesco&quot;                                  
+## [12] &quot;Kabinetsplannen om ouderschapsverlof te versoberen &#39;stap terug voor gendergelijkheid&#39;&quot; 
+## [13] &quot;Verenigde Naties willen dat Nederland meer voor vrouwen doet&quot;                          
+## [14] &quot;Kamermeerderheid inclusief coalitiepartijen: toch geen versobering ouderschapsverlof&quot;  
+## [15] &quot;Primeur in Formule 1: bocht bij GP Australië vernoemd naar vrouwelijke sleutelfiguren&quot; 
+## [16] &quot;Chinese vrouw nagelt vreemdgaande man aan schandpaal met &#39;excuusfilmpjes&#39;&quot;             
+## [17] &quot;VS trekt zich terug uit tientallen VN-organisaties&quot;                                    
+## [18] &quot;Wekdienst 8/1: Kabinetsformatie gaat verder • Nieuwe zitting kunstroof Drents Museum&quot;  
+## [19] &quot;Kamer: discriminatieverbod gaat boven onderwijsvrijheid&quot;                               
+## [20] &quot;CBS: aantal vermoorde vrouwen door (ex-)partner blijft gelijk&quot;</code></pre>
+<pre class="r"><code>link &lt;- nos |&gt; html_elements(&quot;main&quot;) |&gt; 
+  html_elements(&quot;ul&quot;) |&gt;
+  html_elements(&quot;li&quot;) |&gt;
+  html_elements(&quot;a&quot;) |&gt;
+  html_attr(name = &quot;href&quot;)
+link</code></pre>
+<pre><code>##  [1] &quot;/artikel/2631322-nederland-zakt-verder-weg-op-wereldwijde-ranglijst-voor-gendergelijkheid&quot;             
+##  [2] &quot;/artikel/2621300-steeds-meer-amerikaanse-goede-doelen-vluchten-naar-nederland-om-trump&quot;                
+##  [3] &quot;/artikel/2619817-moeders-gaan-meer-verdienen-als-de-vader-met-verlof-gaat-toont-nieuw-onderzoek&quot;       
+##  [4] &quot;/artikel/2631310-sportraad-richt-zich-op-een-advies-voor-2027-focus-op-positie-van-vrouwen-in-de-sport&quot;
+##  [5] &quot;/artikel/2631186-zevende-dode-vrouw-gevonden-bij-johannesburg-politie-waarschuwt-vrouwen&quot;              
+##  [6] &quot;/artikel/2631410-negende-dode-vrouw-gevonden-in-zuid-afrika-in-dezelfde-regio-bij-johannesburg&quot;        
+##  [7] &quot;/artikel/2630574-italiaanse-politica-emma-bonino-overleden-voorvechter-voor-vrouwenrechten&quot;            
+##  [8] &quot;/artikel/2623351-niet-prinsessen-maar-geadopteerde-mannen-moeten-japans-keizerlijk-huis-redden&quot;        
+##  [9] &quot;/artikel/2623566-andrew-tate-en-broer-aangehouden-in-miami-om-verkrachting-en-geweld&quot;                  
+## [10] &quot;/artikel/2621790-franse-rechtspraak-worstelt-met-zaken-over-partnergeweld-nog-lange-weg-te-gaan&quot;       
+## [11] &quot;/artikel/2612456-pride-amsterdam-genomineerd-voor-erfgoedlijst-unesco&quot;                                 
+## [12] &quot;/artikel/2605267-kabinetsplannen-om-ouderschapsverlof-te-versoberen-stap-terug-voor-gendergelijkheid&quot;  
+## [13] &quot;/artikel/2603837-verenigde-naties-willen-dat-nederland-meer-voor-vrouwen-doet&quot;                         
+## [14] &quot;/artikel/2605931-kamermeerderheid-inclusief-coalitiepartijen-toch-geen-versobering-ouderschapsverlof&quot;  
+## [15] &quot;/artikel/2603766-primeur-in-formule-1-bocht-bij-gp-australie-vernoemd-naar-vrouwelijke-sleutelfiguren&quot; 
+## [16] &quot;/artikel/2599387-chinese-vrouw-nagelt-vreemdgaande-man-aan-schandpaal-met-excuusfilmpjes&quot;              
+## [17] &quot;/artikel/2597328-vs-trekt-zich-terug-uit-tientallen-vn-organisaties&quot;                                   
+## [18] &quot;/artikel/2597334-wekdienst-8-1-kabinetsformatie-gaat-verder-nieuwe-zitting-kunstroof-drents-museum&quot;    
+## [19] &quot;/artikel/2593857-kamer-discriminatieverbod-gaat-boven-onderwijsvrijheid&quot;                               
+## [20] &quot;/artikel/2592317-cbs-aantal-vermoorde-vrouwen-door-ex-partner-blijft-gelijk&quot;                           
+## [21] &quot;/zoeken?q=gendergelijkheid&amp;page=0&quot;                                                                     
+## [22] &quot;/zoeken?q=gendergelijkheid&amp;page=1&quot;                                                                     
+## [23] &quot;/zoeken?q=gendergelijkheid&amp;page=2&quot;                                                                     
+## [24] &quot;/zoeken?q=gendergelijkheid&amp;page=3&quot;                                                                     
+## [25] &quot;/zoeken?q=gendergelijkheid&amp;page=4&quot;                                                                     
+## [26] &quot;/zoeken?q=gendergelijkheid&amp;page=5&quot;                                                                     
+## [27] &quot;/zoeken?q=gendergelijkheid&amp;page=6&quot;                                                                     
+## [28] &quot;/zoeken?q=gendergelijkheid&amp;page=2&quot;                                                                     
+## [29] &quot;/zoeken?q=gendergelijkheid&amp;page=1&quot;                                                                     
+## [30] &quot;/zoeken?q=gendergelijkheid&amp;page=2&quot;                                                                     
+## [31] &quot;/zoeken?q=gendergelijkheid&amp;page=3&quot;                                                                     
+## [32] &quot;/zoeken?q=gendergelijkheid&amp;page=4&quot;                                                                     
+## [33] &quot;/zoeken?q=gendergelijkheid&amp;page=5&quot;                                                                     
+## [34] &quot;/zoeken?q=gendergelijkheid&amp;page=2&quot;</code></pre>
+<pre class="r"><code>data &lt;- nos |&gt;
+  html_elements(&quot;time&quot;) |&gt;
+  html_text()
+data</code></pre>
+<pre><code>##  [1] &quot;donderdag, 00:33&quot;                &quot;donderdag 2 juli, 11:37&quot;        
+##  [3] &quot;maandag 22 juni, 20:07&quot;          &quot;woensdag, 22:04&quot;                
+##  [5] &quot;woensdag, 01:34&quot;                 &quot;donderdag, 18:32&quot;               
+##  [7] &quot;vrijdag 11 september, 13:57&quot;     &quot;vrijdag 17 juli, 14:00&quot;         
+##  [9] &quot;zondag 19 juli, 03:47&quot;           &quot;zondag 5 juli, 19:34&quot;           
+## [11] &quot;woensdag 29 april, 23:01&quot;        &quot;zaterdag 7 maart 2026, 07:04&quot;   
+## [13] &quot;dinsdag 24 februari 2026, 12:46&quot; &quot;woensdag 11 maart 2026, 17:35&quot;  
+## [15] &quot;maandag 23 februari 2026, 20:01&quot; &quot;vrijdag 23 januari 2026, 16:11&quot; 
+## [17] &quot;donderdag 8 januari 2026, 01:23&quot; &quot;donderdag 8 januari 2026, 06:29&quot;
+## [19] &quot;dinsdag 9 december 2025, 16:56&quot;  &quot;vrijdag 28 november 2025, 08:41&quot;</code></pre>
+<pre class="r"><code>length(titel)</code></pre>
+<pre><code>## [1] 20</code></pre>
+<pre class="r"><code>length(data)</code></pre>
+<pre><code>## [1] 20</code></pre>
+<pre class="r"><code>length(link)</code></pre>
+<pre><code>## [1] 34</code></pre>
+<pre class="r"><code>info &lt;- tibble(titel, data, link[1:20])
+
+information &lt;- info |&gt;
+  rename(Title = titel, Date = data, URL = `link[1:20]`) |&gt;
+  mutate(URL = paste0(&quot;https://nos.nl&quot;, URL))
+
+print(information[,&quot;URL&quot;])</code></pre>
+<pre><code>## # A tibble: 20 × 1
+##    URL                                                                                              
+##    &lt;chr&gt;                                                                                            
+##  1 https://nos.nl/artikel/2631322-nederland-zakt-verder-weg-op-wereldwijde-ranglijst-voor-gendergel…
+##  2 https://nos.nl/artikel/2621300-steeds-meer-amerikaanse-goede-doelen-vluchten-naar-nederland-om-t…
+##  3 https://nos.nl/artikel/2619817-moeders-gaan-meer-verdienen-als-de-vader-met-verlof-gaat-toont-ni…
+##  4 https://nos.nl/artikel/2631310-sportraad-richt-zich-op-een-advies-voor-2027-focus-op-positie-van…
+##  5 https://nos.nl/artikel/2631186-zevende-dode-vrouw-gevonden-bij-johannesburg-politie-waarschuwt-v…
+##  6 https://nos.nl/artikel/2631410-negende-dode-vrouw-gevonden-in-zuid-afrika-in-dezelfde-regio-bij-…
+##  7 https://nos.nl/artikel/2630574-italiaanse-politica-emma-bonino-overleden-voorvechter-voor-vrouwe…
+##  8 https://nos.nl/artikel/2623351-niet-prinsessen-maar-geadopteerde-mannen-moeten-japans-keizerlijk…
+##  9 https://nos.nl/artikel/2623566-andrew-tate-en-broer-aangehouden-in-miami-om-verkrachting-en-gewe…
+## 10 https://nos.nl/artikel/2621790-franse-rechtspraak-worstelt-met-zaken-over-partnergeweld-nog-lang…
+## 11 https://nos.nl/artikel/2612456-pride-amsterdam-genomineerd-voor-erfgoedlijst-unesco              
+## 12 https://nos.nl/artikel/2605267-kabinetsplannen-om-ouderschapsverlof-te-versoberen-stap-terug-voo…
+## 13 https://nos.nl/artikel/2603837-verenigde-naties-willen-dat-nederland-meer-voor-vrouwen-doet      
+## 14 https://nos.nl/artikel/2605931-kamermeerderheid-inclusief-coalitiepartijen-toch-geen-versobering…
+## 15 https://nos.nl/artikel/2603766-primeur-in-formule-1-bocht-bij-gp-australie-vernoemd-naar-vrouwel…
+## 16 https://nos.nl/artikel/2599387-chinese-vrouw-nagelt-vreemdgaande-man-aan-schandpaal-met-excuusfi…
+## 17 https://nos.nl/artikel/2597328-vs-trekt-zich-terug-uit-tientallen-vn-organisaties                
+## 18 https://nos.nl/artikel/2597334-wekdienst-8-1-kabinetsformatie-gaat-verder-nieuwe-zitting-kunstro…
+## 19 https://nos.nl/artikel/2593857-kamer-discriminatieverbod-gaat-boven-onderwijsvrijheid            
+## 20 https://nos.nl/artikel/2592317-cbs-aantal-vermoorde-vrouwen-door-ex-partner-blijft-gelijk</code></pre>
+<pre class="r"><code>View(information)</code></pre>
+</div>
+
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIlpfaGFuZGlnaGVpZGplcyINCm91dHB1dDogaHRtbF9kb2N1bWVudA0KLS0tDQoNCiMjIFBERiB2ZXJzaW9uDQoNClw8aWZyYW1lIHNyYz0iUHJlc2VudGF0aW9ucy9zb2NpYWxuZXR3b3Jrc19wcmVzZW50YXRpb25fMS5wZGYiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjcwMHhwIiBzdHlsZT0iYm9yZGVyOm5vbmU7Ilw+DQoNClw8L2lmcmFtZVw+DQoNCjxicj4NCg0KPGJyPg0KDQojIyBHb29nbGUgU2xpZGVzIHZlcnNpb24NCg0KXDxpZnJhbWUgc3JjPSJbaHR0cHM6Ly9kb2NzLmdvb2dsZS5jb20vcHJlc2VudGF0aW9uL2QvZS8yUEFDWC0xdlJlT2RkUy1SdjFScHhOSmVvUnVNanotQm4tc0RlRG9UMDR0VklNa3FoUlMyeE5DVWVQaVBtbFZHWXFxZmxCdHVXdm1JMjVySnhXdTRLcS9wdWJlbWJlZD9zdGFydD1mYWxzZSZsb29wPWZhbHNlJmRlbGF5bXM9MzAwMCJdKGh0dHBzOi8vZG9jcy5nb29nbGUuY29tL3ByZXNlbnRhdGlvbi9kL2UvMlBBQ1gtMXZSZU9kZFMtUnYxUnB4Tkplb1J1TWp6LUJuLXNEZURvVDA0dFZJTWtxaFJTMnhOQ1VlUGlQbWxWR1lxcWZsQnR1V3ZtSTI1ckp4V3U0S3EvcHViZW1iZWQ/c3RhcnQ9ZmFsc2UmbG9vcD1mYWxzZSZkZWxheW1zPTMwMDAlMjIpIGZyYW1lYm9yZGVyPSIwIiB3aWR0aD0iOTYwIiBoZWlnaHQ9IjU2OSIgYWxsb3dmdWxsc2NyZWVuPSJ0cnVlIiBtb3phbGxvd2Z1bGxzY3JlZW49InRydWUiIHdlYmtpdGFsbG93ZnVsbHNjcmVlbj0idHJ1ZSJcPg0KDQpcPC9pZnJhbWVcPg0KDQojIyBXZWJzY3JhcGVuDQoNCmBgYHtyfQ0KbGlicmFyeShydmVzdCkNCmxpYnJhcnkodGlkeXZlcnNlKQ0KDQp1cmwgPC0gImh0dHBzOi8vbm9zLm5sL3pvZWtlbj9xPWdlbmRlcmdlbGlqa2hlaWQmcGFnZT0xIg0Kbm9zIDwtIHJlYWRfaHRtbCh1cmwpDQpub3MNCg0KdGl0ZWwgPC0gbm9zIHw+DQogIGh0bWxfZWxlbWVudHMoIi5rWUJycmwiKSB8Pg0KICBodG1sX3RleHQoKQ0KdGl0ZWwNCg0KbGluayA8LSBub3MgfD4gaHRtbF9lbGVtZW50cygibWFpbiIpIHw+IA0KICBodG1sX2VsZW1lbnRzKCJ1bCIpIHw+DQogIGh0bWxfZWxlbWVudHMoImxpIikgfD4NCiAgaHRtbF9lbGVtZW50cygiYSIpIHw+DQogIGh0bWxfYXR0cihuYW1lID0gImhyZWYiKQ0KbGluaw0KDQpkYXRhIDwtIG5vcyB8Pg0KICBodG1sX2VsZW1lbnRzKCJ0aW1lIikgfD4NCiAgaHRtbF90ZXh0KCkNCmRhdGENCg0KbGVuZ3RoKHRpdGVsKQ0KbGVuZ3RoKGRhdGEpDQpsZW5ndGgobGluaykNCg0KaW5mbyA8LSB0aWJibGUodGl0ZWwsIGRhdGEsIGxpbmtbMToyMF0pDQoNCmluZm9ybWF0aW9uIDwtIGluZm8gfD4NCiAgcmVuYW1lKFRpdGxlID0gdGl0ZWwsIERhdGUgPSBkYXRhLCBVUkwgPSBgbGlua1sxOjIwXWApIHw+DQogIG11dGF0ZShVUkwgPSBwYXN0ZTAoImh0dHBzOi8vbm9zLm5sIiwgVVJMKSkNCg0KcHJpbnQoaW5mb3JtYXRpb25bLCJVUkwiXSkNCg0KVmlldyhpbmZvcm1hdGlvbikNCmBgYA0K</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("Z_handigheidjes.Rmd");
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

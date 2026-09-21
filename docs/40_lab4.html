@@ -388,6 +388,18 @@ div.tocify {
     </li>
   </ul>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Handigheidjes
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Z_handigheidjes.html">:)</a>
+    </li>
+  </ul>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
@@ -422,12 +434,606 @@ div.tocify {
 
 <div id="week-4" class="section level1" number="1">
 <h1><span class="header-section-number">1</span> Week 4</h1>
-<div id="section" class="section level2" number="1.1">
-<h2><span class="header-section-number">1.1</span> ..</h2>
+<div id="data-visualisations" class="section level2" number="1.1">
+<h2><span class="header-section-number">1.1</span> Data
+visualisations</h2>
+<ul>
+<li>See SNASS Chapter 9</li>
+</ul>
+<div id="create-an-igraph-object" class="section level3" number="1.1.1">
+<h3><span class="header-section-number">1.1.1</span> Create an igraph
+object</h3>
+<pre class="r"><code>require(igraph)
+g &lt;- make_graph(&quot;Zachary&quot;)
+plot(g)</code></pre>
+<p><img src="40_lab4_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<pre class="r"><code># My image is not the same as the one in the book
+# So there&#39;s an algorithm underlying the calculation (random component)
+# Centre of the figure determined based on popularity
+# relations are undirected
+# is that the default of igraph or because of the data?</code></pre>
+</div>
+<div id="inspect-adjacency-matrix" class="section level3"
+number="1.1.2">
+<h3><span class="header-section-number">1.1.2</span> Inspect Adjacency
+Matrix</h3>
+<ul>
+<li>G is an igraph object</li>
+</ul>
+<pre class="r"><code>gmat &lt;- as_adjacency_matrix(g, type = &quot;both&quot;, sparse = FALSE)
+#gmat
+
+isSymmetric(gmat) # undirected</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+</div>
+<div id="descriptives" class="section level3" number="1.1.3">
+<h3><span class="header-section-number">1.1.3</span> Descriptives</h3>
+<pre class="r"><code># SIZE
+# number of nodes
+vcount(g)</code></pre>
+<pre><code>## [1] 34</code></pre>
+<pre class="r"><code># number of edges
+ecount(g)</code></pre>
+<pre><code>## [1] 78</code></pre>
+<pre class="r"><code># DEGREE
+igraph::degree(g)</code></pre>
+<pre><code>##  [1] 16  9 10  6  3  4  4  4  5  2  3  1  2  5  2  2  2  2  2  3  2  2  2  5  3  3  2  4  3  4  4  6
+## [33] 12 17</code></pre>
+<pre class="r"><code>hist(table(degree(g)), xlab=&#39;indegree&#39;, main= &#39;Histogram of indegree&#39;)</code></pre>
+<p><img src="40_lab4_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<pre class="r"><code># TRANSITIVITY
+igraph::transitivity(g, type = c(&quot;localundirected&quot;), isolates = c(&quot;NaN&quot;, &quot;zero&quot;))</code></pre>
+<pre><code>##  [1] 0.1500000 0.3333333 0.2444444 0.6666667 0.6666667 0.5000000 0.5000000 1.0000000 0.5000000
+## [10] 0.0000000 0.6666667       NaN 1.0000000 0.6000000 1.0000000 1.0000000 1.0000000 1.0000000
+## [19] 1.0000000 0.3333333 1.0000000 1.0000000 1.0000000 0.4000000 0.3333333 0.3333333 1.0000000
+## [28] 0.1666667 0.3333333 0.6666667 0.5000000 0.2000000 0.1969697 0.1102941</code></pre>
+<pre class="r"><code># BETWEENNESS
+igraph::betweenness(g, directed = FALSE) # shortest path length between two actors and how often is actor A included in the path?</code></pre>
+<pre><code>##  [1] 231.0714286  28.4785714  75.8507937   6.2880952   0.3333333  15.8333333  15.8333333   0.0000000
+##  [9]  29.5293651   0.4476190   0.3333333   0.0000000   0.0000000  24.2158730   0.0000000   0.0000000
+## [17]   0.0000000   0.0000000   0.0000000  17.1468254   0.0000000   0.0000000   0.0000000   9.3000000
+## [25]   1.1666667   2.0277778   0.0000000  11.7920635   0.9476190   1.5428571   7.6095238  73.0095238
+## [33]  76.6904762 160.5515873</code></pre>
+<pre class="r"><code># standardiseren is handig als je meerdere netwerken met elkaar vergelijkt</code></pre>
+<ul>
+<li><p>Emphasize notes via colour or size (change ‘u-pallete’ depending
+on level of betweenness)</p></li>
+<li><p>Or change the lay-out to highlight the notes with high levels of
+betweenness</p></li>
+</ul>
+<pre class="r"><code>library(pander)
+
+igraph::dyad_census(g) </code></pre>
+<pre><code>## Warning: `dyad_census()` requires a directed graph.</code></pre>
+<pre><code>## $mut
+## [1] 78
+## 
+## $asym
+## [1] 0
+## 
+## $null
+## [1] 483</code></pre>
+<pre class="r"><code>igraph::triad_census(g)</code></pre>
+<pre><code>## Warning in triad_census_impl(graph = graph): Triad census called on an undirected graph. All connections will be treated as mutual.
+## Source: misc/motifs.c:1157</code></pre>
+<pre><code>##  [1] 3971    0 1575    0    0    0    0    0    0    0  393    0    0    0    0   45</code></pre>
+<pre class="r"><code># I will use sna because it shows the names of the triads as well
+pander(sna::triad.census(gmat))</code></pre>
+<table style="width:100%;">
+<caption>Table continues below</caption>
+<colgroup>
+<col width="9%" />
+<col width="7%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">003</th>
+<th align="center">012</th>
+<th align="center">102</th>
+<th align="center">021D</th>
+<th align="center">021U</th>
+<th align="center">021C</th>
+<th align="center">111D</th>
+<th align="center">111U</th>
+<th align="center">030T</th>
+<th align="center">030C</th>
+<th align="center">201</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">3971</td>
+<td align="center">0</td>
+<td align="center">1575</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">393</td>
+</tr>
+</tbody>
+</table>
+<table style="width:46%;">
+<colgroup>
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="8%" />
+<col width="8%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">120D</th>
+<th align="center">120U</th>
+<th align="center">120C</th>
+<th align="center">210</th>
+<th align="center">300</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">45</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>unloadNamespace(&quot;sna&quot;)  
+# Detach this package again, otherwise it will interfere with all kind of functions from igraph
+
+# Transitivity at the netwerk level, number of closed triads of all triads that could be closed (all triad configurations consisting of two triads)
+
+# Er zijn drie opties mogelijk voor het sluiten van 201 (AB-C, AC-B, BC-A)
+# Als we 201 sluiten, dan waren er drie opties voorafgaand
+# Er zijn 393 gesloten (3 gesloten)
+
+# Definitie transitiviteit
+# Hoeveel triades zijn er gesloten (45 * 3) / 
+# totaal gesloten netwerken OF hadden gesloten kunnen worden ((45 * 3) + 393)
+
+igraph::transitivity(g, type = &quot;global&quot;)</code></pre>
+<pre><code>## [1] 0.2556818</code></pre>
+<pre class="r"><code>sna::gtrans(gmat)</code></pre>
+<pre><code>## [1] 0.2556818</code></pre>
+<pre class="r"><code>triad_g &lt;- data.frame(sna::triad.census(gmat))
+
+transitivity_g &lt;- (3 * triad_g$X300)/(triad_g$X201 + 3 * triad_g$X300)
+transitivity_g</code></pre>
+<pre><code>## [1] 0.2556818</code></pre>
+<pre class="r"><code># reciproce relaties tel je twee keer (*2)</code></pre>
+<ul>
+<li><p>Transitiviteit</p>
+<ul>
+<li><p>Lokaal: beredeneerd vanuit ego</p></li>
+<li><p>Globaal: netwerkniveau</p></li>
+<li><p>Om netwerken te vergelijken: zelfde aantal vrienden maar in
+netwerk A zijn er driehoekjes terwijl netwerk B minder hecht is, omdat
+er geen transitiviteit is</p></li>
+</ul></li>
+</ul>
+</div>
+<div id="netwerk-visualisation" class="section level3" number="1.1.4">
+<h3><span class="header-section-number">1.1.4</span> Netwerk
+visualisation</h3>
+<pre class="r"><code># changing V
+V(g)$size = betweenness(g, normalized = T, directed = FALSE) * 60 + 10
+
+# V = vertices (nodes)
+# E = edges
+# normaliseren
+# * 60 + 10 (om tot een goede grootte te komen)
+# * 60 (omdat betweenness score tussen 0 &amp; 1)
+# + 10 (omdat anders mensen zonder betweenness geen bolletje krijgen)
+
+# after some trial and error
+plot(g, mode = &quot;undirected&quot;)</code></pre>
+<p><img src="40_lab4_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<pre class="r"><code># vooraf grootte plotwindow definiëren
+# volledig A4 size is een beginpunt
+# en dan alle plaatjes maken
+# wegschijven als .PNG</code></pre>
+<pre class="r"><code>set.seed(2345)
+
+l &lt;- layout_with_mds(g)  # https://igraph.org/r/doc/layout_with_mds.html
+plot(g, layout = l)</code></pre>
+<p><img src="40_lab4_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<pre class="r"><code># Little further apart (manually)
+
+l  # let us take a look at the coordinates</code></pre>
+<pre><code>##               [,1]         [,2]
+##  [1,]  1.070931935 -0.172458113
+##  [2,]  0.732844464  0.754023309
+##  [3,]  0.100582299  0.397693607
+##  [4,]  0.708246655  0.570205545
+##  [5,]  1.816293170 -0.120778206
+##  [6,]  1.881329566 -0.135518854
+##  [7,]  1.881329566 -0.135518854
+##  [8,]  0.812606714  0.472619437
+##  [9,] -0.003769996  0.615513628
+## [10,] -0.685680315  0.621065149
+## [11,]  1.816293170 -0.120778206
+## [12,]  1.621247830 -0.065820692
+## [13,]  1.637845123  0.001789972
+## [14,]  0.067317230  0.681421148
+## [15,] -1.796316404  0.351417630
+## [16,] -1.796316404  0.351417630
+## [17,]  2.775260452 -0.124317652
+## [18,]  1.616210024  0.182510197
+## [19,] -1.796316404  0.351417630
+## [20,]  0.048362858  0.566654982
+## [21,] -1.796316404  0.351417630
+## [22,]  1.616210024  0.182510197
+## [23,] -1.796316404  0.351417630
+## [24,] -1.891240567 -0.799574907
+## [25,] -0.258345165 -2.006346563
+## [26,] -0.360530857 -2.131642875
+## [27,] -1.865177401  0.128596564
+## [28,] -0.760226022 -0.529392331
+## [29,] -0.710979936 -0.299960128
+## [30,] -1.898426916 -0.149398746
+## [31,] -0.568691923  0.804189411
+## [32,] -0.048136037 -0.870967614
+## [33,] -1.023681000 -0.035802363
+## [34,] -1.146442924 -0.037605192</code></pre>
+<pre class="r"><code>l[1, 1] &lt;- 4
+l[34, 1] &lt;- -3.5
+plot(g, layout = l)</code></pre>
+<p><img src="40_lab4_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<pre class="r"><code># plaatje met twee nodes aan de buitenkant (trekken beide)
+# plaatje laat polarisatie zien
+# als je zo&#39;n figuur in een aritkel publiceert, altijd benoemen dat 1 en 34 handmatig aan de buitenkant zijn geplaatst om te illustreren wat er wordt gevonden (anders neight het naar datamanipulatie)
+# Take-home message: plaatjes zijn niet neutraal</code></pre>
+<pre class="r"><code>plot(g, layout = l, margin = c(0, 0, 0, 0))
+legend(x = -2, y = -1.5, c(&quot;Note: the position of nodes 1 and 34 have been set by Jochem Tolsma \n for visualisation purposes only and do not reflect network properties&quot;),
+                                                  bty = &quot;n&quot;, cex = 0.8)</code></pre>
+<p><img src="40_lab4_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+</div>
+<div id="twittersphere" class="section level3" number="1.1.5">
+<h3><span class="header-section-number">1.1.5</span> Twittersphere</h3>
+<pre class="r"><code>load(&quot;./data/twitter_20190919.RData&quot;)  
+#str(twitter_20190919, 1)</code></pre>
+<pre class="r"><code>testm &lt;- matrix(NA, nrow = 4, ncol = 4)
+testm</code></pre>
+<pre><code>##      [,1] [,2] [,3] [,4]
+## [1,]   NA   NA   NA   NA
+## [2,]   NA   NA   NA   NA
+## [3,]   NA   NA   NA   NA
+## [4,]   NA   NA   NA   NA</code></pre>
+<pre class="r"><code>class(testm)</code></pre>
+<pre><code>## [1] &quot;matrix&quot; &quot;array&quot;</code></pre>
+<pre class="r"><code>testm[1,] &lt;- c(0,1,NA,1)
+testm[3,] &lt;- c(0,1,NA,1)
+testm[4,] &lt;- c(0,1,NA,0)
+testm</code></pre>
+<pre><code>##      [,1] [,2] [,3] [,4]
+## [1,]    0    1   NA    1
+## [2,]   NA   NA   NA   NA
+## [3,]    0    1   NA    1
+## [4,]    0    1   NA    0</code></pre>
+<pre class="r"><code>is.na(testm)</code></pre>
+<pre><code>##       [,1]  [,2] [,3]  [,4]
+## [1,] FALSE FALSE TRUE FALSE
+## [2,]  TRUE  TRUE TRUE  TRUE
+## [3,] FALSE FALSE TRUE FALSE
+## [4,] FALSE FALSE TRUE FALSE</code></pre>
+<pre class="r"><code>class(testm)</code></pre>
+<pre><code>## [1] &quot;matrix&quot; &quot;array&quot;</code></pre>
+<pre class="r"><code>mrow &lt;- rowSums(is.na(testm)) == nrow(testm)
+mcol &lt;- colSums(is.na(testm)) == nrow(testm)
+
+mrow &amp; mcol </code></pre>
+<pre><code>## [1] FALSE FALSE FALSE FALSE</code></pre>
+<pre class="r"><code>mtotal &lt;- which(mrow &amp; mcol)
+# stel 2, dan weet je rij 2 en column 2 kunnen uit de data
+
+which(mrow) # welke rij willen we vervangen</code></pre>
+<pre><code>## [1] 2</code></pre>
+<pre class="r"><code>which(mcol) # welke kolom willen we vervangen</code></pre>
+<pre><code>## [1] 3</code></pre>
+<pre class="r"><code>testm[which(mrow),] &lt;- 0
+testm[,which(mcol)] &lt;- 0
+ 
+testm[is.na(testm)] &lt;- 0 # voor het plotten moeten we NA = 0 (niet voor Rsiena)
+testm # dit is een botte bijl, voor plotten prima maar voor Rsiena minder</code></pre>
+<pre><code>##      [,1] [,2] [,3] [,4]
+## [1,]    0    1    0    1
+## [2,]    0    0    0    0
+## [3,]    0    1    0    1
+## [4,]    0    1    0    0</code></pre>
+</div>
+</div>
+<div id="webscraping-chapter-9-in-snass" class="section level2"
+number="1.2">
+<h2><span class="header-section-number">1.2</span> Webscraping (Chapter
+9 in SNASS)</h2>
+<ol style="list-style-type: decimal">
+<li>Grootschalig (2) Time-stamped data (3) Observeren (informatie niet
+in surveys)</li>
+</ol>
+<ul>
+<li><p>Informatie van internet afhalen op geautomatiseerde
+wijze</p></li>
+<li><p>Data-sharing</p>
+<ul>
+<li><p>Met toestemming whatsapp data analyseren (netwerken
+construeren)</p></li>
+<li><p>Bijvoorbeeld of telefoons in elkaars buurt zijn geweest</p>
+<ul>
+<li>Of de telefoon van A een bluetooth verzoek naar de telefoon van B
+heeft gestuurd</li>
+</ul></li>
+</ul></li>
+<li><p>Objectieve data (geobserveerd) in plaats van surveydata (naar
+eigen zeggen)</p></li>
+<li><p>Hoe sample je deze data? Wat is de populatie van berichten?
+Wanneer stop je?</p>
+<ul>
+<li><p>Als je wilt onderzoeken wie naar de Efteling gaat</p></li>
+<li><p>Via het onderzoeken van social-media posts</p></li>
+<li><p>Dan mis je mensen die niet posten (selectiviteit)</p></li>
+</ul></li>
+<li><p>Ethics</p>
+<ul>
+<li><p>Mag je geautomatiseerd informatie van het internet halen?
+Websites hebben vaak robot-exclusion protocollen die geautomatiseerde
+dataverzameling verbieden</p></li>
+<li><p>Mag het van de eigenaar? Mag het van de wet? <em>Wat vind je zelf
+(belangrijkste)?</em></p>
+<ul>
+<li><p>Kijk naar de beroepscode van sociologen &amp; wetenschappelijke
+integriteit</p></li>
+<li><p>Voor een paper, zorg dat je langs een ethische commissie
+gaat</p></li>
+</ul></li>
+</ul></li>
+</ul>
+<div id="handmatig" class="section level3" number="1.2.1">
+<h3><span class="header-section-number">1.2.1</span> Handmatig</h3>
+</div>
+<div id="data-vragen-aan-eigenaar" class="section level3"
+number="1.2.2">
+<h3><span class="header-section-number">1.2.2</span> Data vragen aan
+eigenaar</h3>
+</div>
+<div id="apis-websites-bedoeld-om-te-scrapen" class="section level3"
+number="1.2.3">
+<h3><span class="header-section-number">1.2.3</span> APIs (websites
+bedoeld om te scrapen)</h3>
+</div>
+<div id="webscraping-aka-crawling-technieken-voorbeeld-nos-scrapen"
+class="section level3" number="1.2.4">
+<h3><span class="header-section-number">1.2.4</span> Webscraping (AKA
+crawling technieken) (voorbeeld: NOS scrapen)</h3>
+<pre class="r"><code>require(rvest)</code></pre>
+<pre><code>## Loading required package: rvest</code></pre>
+<pre><code>## Warning: package &#39;rvest&#39; was built under R version 4.5.2</code></pre>
+<pre><code>## 
+## Attaching package: &#39;rvest&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:readr&#39;:
+## 
+##     guess_encoding</code></pre>
+<pre class="r"><code>require(xml2)</code></pre>
+<pre><code>## Loading required package: xml2</code></pre>
+<pre><code>## Warning: package &#39;xml2&#39; was built under R version 4.5.2</code></pre>
+<ul>
+<li><p>Ga naar NOS.nl en ga naar ‘Zoeken’</p></li>
+<li><p>Zie de URL</p></li>
+<li><p>q=jochem+tolsma (zoektermen)</p></li>
+<li><p>&amp; page=1 (aantal pagina’s)</p></li>
+<li><p><a href="https://nos.nl/zoeken?q=gendergelijkheid&amp;page=1"
+class="uri">https://nos.nl/zoeken?q=gendergelijkheid&amp;page=1</a></p></li>
+<li><p>Rechtermuisknop, inspecteren (open DevTools), Elements</p></li>
+<li><p>Een webpagina heeft een hierarchische structuur</p>
+<ul>
+<li>Opgebouwd, subonderdelen met eigenschappen, namen, IDs</li>
+</ul></li>
+<li><p>Kijk bij ‘body’</p>
+<ul>
+<li><p>Bestaat uit een titel, bovenkant, main, en footer
+(onderpagina)</p></li>
+<li><p>Meestal zit waar je geïntereseerd bent in <em>main</em></p>
+<ul>
+<li><p>Daarbinnen zoek je <em>div</em> en uiteindelijk je
+onderdeel</p></li>
+<li><p>Je zoekt een soort table (UL) of list (LI) in UL</p></li>
+<li><p>Zie een href, zoek de time-stap, zoek titel</p></li>
+</ul></li>
+</ul></li>
+</ul>
+<pre class="r"><code>library(rvest)
+library(tidyverse)
+
+url &lt;- &quot;https://nos.nl/zoeken?q=gendergelijkheid&amp;page=1&quot;
+nos &lt;- read_html(url)
+nos</code></pre>
+<pre><code>## {html_document}
+## &lt;html data-theme=&quot;light&quot; lang=&quot;nl&quot;&gt;
+## [1] &lt;head&gt;\n&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-8&quot;&gt;\n&lt;meta charset=&quot;u ...
+## [2] &lt;body&gt;\n&lt;div id=&quot;__next&quot;&gt;\n&lt;nav data-tracking=&quot;nestType1=header&quot; aria-label=&quot;Hoofdnavigatie&quot;  ...</code></pre>
+<pre class="r"><code># bekijk functies in een package
+# ?rvest (zie index)
+
+# opslaan als XML noteset (met subnotes, want hierarchische webpagina)
+
+lijst &lt;- nos %&gt;% html_elements(&quot;main&quot;) %&gt;%
+  html_elements(&quot;ul&quot;) %&gt;% # eerste ul is wat we nodig hebben
+  html_elements(&quot;li&quot;) # daarbinnen willen we alle list-elementen
+
+# html_children() wat zit eronder?
+lijst[1] %&gt;% html_children</code></pre>
+<pre><code>## {xml_nodeset (1)}
+## [1] &lt;a data-tracking=&quot;eventType=navigation|eventName=open|elementId=2631322|elementType=article|e ...</code></pre>
+<pre class="r"><code>lijst[1] %&gt;% html_children %&gt;% html_children</code></pre>
+<pre><code>## {xml_nodeset (2)}
+## [1] &lt;div class=&quot;ListItem-style__ImageContainer-sc-1be7388f-1 cxsSmy&quot;&gt;&lt;span class=&quot;ResponsiveImage ...
+## [2] &lt;div class=&quot;ListItem-style__ContentContainer-sc-1be7388f-0 dEBlet&quot;&gt;\n&lt;p class=&quot;ListItem-style ...</code></pre>
+<pre class="r"><code>lijst[1] %&gt;% html_children() %&gt;% html_attrs() # kijk welke elementen in dit object</code></pre>
+<pre><code>## [[1]]
+##                                                                               data-tracking 
+##    &quot;eventType=navigation|eventName=open|elementId=2631322|elementType=article|elementPos=1&quot; 
+##                                                                                 data-testid 
+##                                                                                  &quot;listitem&quot; 
+##                                                                                       class 
+##                                               &quot;ListItem-style__Anchor-sc-1be7388f-4 fBBvfR&quot; 
+##                                                                                        href 
+## &quot;/artikel/2631322-nederland-zakt-verder-weg-op-wereldwijde-ranglijst-voor-gendergelijkheid&quot;</code></pre>
+<pre class="r"><code>artikel1 &lt;- lijst[1] %&gt;% html_children() %&gt;% html_attr(name = &quot;href&quot;) # zo pak je website
+# href is de link
+# we hebben het nu geretrieved, moeten het nog opslaan in een databestand
+
+# weer een website van maken: 
+paste0(&quot;https://nos.nl&quot;, artikel1)</code></pre>
+<pre><code>## [1] &quot;https://nos.nl/artikel/2631322-nederland-zakt-verder-weg-op-wereldwijde-ranglijst-voor-gendergelijkheid&quot;</code></pre>
+<pre class="r"><code>time &lt;- nos %&gt;% html_elements(&quot;main&quot;) %&gt;%
+  html_elements(&quot;ul&quot;) %&gt;% 
+  html_elements(&quot;li&quot;) %&gt;%
+  html_elements(&quot;time&quot;) # om tijd informatie te retrieven
+
+time[1] %&gt;% html_attr(name = &quot;datetime&quot;) # hier </code></pre>
+<pre><code>## [1] &quot;2026-09-17T00:33:46+0200&quot;</code></pre>
+<pre class="r"><code>#?html_text()
+
+# &lt;&gt; hier tussenin staat een html tag
+
+# html_element() zoeken op basis van css of xpath
+# ga naar web browser en website, klik op het juiste element 
+# bijvoorbeeld &lt;div class&gt; en dan kies je copy xPath of copy Full xpath
+# /html/body/div/main/div[2] 
+
+titel &lt;- nos |&gt;
+  html_elements(&quot;.kYBrrl&quot;) |&gt;
+  html_text()
+titel</code></pre>
+<pre><code>##  [1] &quot;Nederland zakt verder weg op wereldwijde ranglijst voor gendergelijkheid&quot;              
+##  [2] &quot;Steeds meer Amerikaanse goede doelen vluchten naar Nederland om Trump&quot;                 
+##  [3] &quot;Moeders gaan meer verdienen als de vader met verlof gaat, toont nieuw onderzoek&quot;       
+##  [4] &quot;Sportraad richt zich op één advies voor 2027: focus op positie van vrouwen in de sport&quot;
+##  [5] &quot;Zevende dode vrouw gevonden bij Johannesburg, politie waarschuwt vrouwen&quot;              
+##  [6] &quot;Negende dode vrouw gevonden in Zuid-Afrika in dezelfde regio bij Johannesburg&quot;         
+##  [7] &quot;Italiaanse politica Emma Bonino overleden, voorvechter voor vrouwenrechten &quot;           
+##  [8] &quot;Niet prinsessen maar geadopteerde mannen moeten Japans keizerlijk huis redden&quot;         
+##  [9] &quot;Andrew Tate en broer aangehouden in Miami om verkrachting en geweld &quot;                  
+## [10] &quot;Franse rechtspraak worstelt met zaken over partnergeweld: &#39;Nog lange weg te gaan&#39;&quot;     
+## [11] &quot;Pride Amsterdam genomineerd voor erfgoedlijst Unesco&quot;                                  
+## [12] &quot;Kabinetsplannen om ouderschapsverlof te versoberen &#39;stap terug voor gendergelijkheid&#39;&quot; 
+## [13] &quot;Verenigde Naties willen dat Nederland meer voor vrouwen doet&quot;                          
+## [14] &quot;Kamermeerderheid inclusief coalitiepartijen: toch geen versobering ouderschapsverlof&quot;  
+## [15] &quot;Primeur in Formule 1: bocht bij GP Australië vernoemd naar vrouwelijke sleutelfiguren&quot; 
+## [16] &quot;Chinese vrouw nagelt vreemdgaande man aan schandpaal met &#39;excuusfilmpjes&#39;&quot;             
+## [17] &quot;VS trekt zich terug uit tientallen VN-organisaties&quot;                                    
+## [18] &quot;Wekdienst 8/1: Kabinetsformatie gaat verder • Nieuwe zitting kunstroof Drents Museum&quot;  
+## [19] &quot;Kamer: discriminatieverbod gaat boven onderwijsvrijheid&quot;                               
+## [20] &quot;CBS: aantal vermoorde vrouwen door (ex-)partner blijft gelijk&quot;</code></pre>
+<pre class="r"><code>link &lt;- nos |&gt; html_elements(&quot;main&quot;) |&gt; 
+  html_elements(&quot;ul&quot;) |&gt;
+  html_elements(&quot;li&quot;) |&gt;
+  html_elements(&quot;a&quot;) |&gt;
+  html_attr(name = &quot;href&quot;)
+link</code></pre>
+<pre><code>##  [1] &quot;/artikel/2631322-nederland-zakt-verder-weg-op-wereldwijde-ranglijst-voor-gendergelijkheid&quot;             
+##  [2] &quot;/artikel/2621300-steeds-meer-amerikaanse-goede-doelen-vluchten-naar-nederland-om-trump&quot;                
+##  [3] &quot;/artikel/2619817-moeders-gaan-meer-verdienen-als-de-vader-met-verlof-gaat-toont-nieuw-onderzoek&quot;       
+##  [4] &quot;/artikel/2631310-sportraad-richt-zich-op-een-advies-voor-2027-focus-op-positie-van-vrouwen-in-de-sport&quot;
+##  [5] &quot;/artikel/2631186-zevende-dode-vrouw-gevonden-bij-johannesburg-politie-waarschuwt-vrouwen&quot;              
+##  [6] &quot;/artikel/2631410-negende-dode-vrouw-gevonden-in-zuid-afrika-in-dezelfde-regio-bij-johannesburg&quot;        
+##  [7] &quot;/artikel/2630574-italiaanse-politica-emma-bonino-overleden-voorvechter-voor-vrouwenrechten&quot;            
+##  [8] &quot;/artikel/2623351-niet-prinsessen-maar-geadopteerde-mannen-moeten-japans-keizerlijk-huis-redden&quot;        
+##  [9] &quot;/artikel/2623566-andrew-tate-en-broer-aangehouden-in-miami-om-verkrachting-en-geweld&quot;                  
+## [10] &quot;/artikel/2621790-franse-rechtspraak-worstelt-met-zaken-over-partnergeweld-nog-lange-weg-te-gaan&quot;       
+## [11] &quot;/artikel/2612456-pride-amsterdam-genomineerd-voor-erfgoedlijst-unesco&quot;                                 
+## [12] &quot;/artikel/2605267-kabinetsplannen-om-ouderschapsverlof-te-versoberen-stap-terug-voor-gendergelijkheid&quot;  
+## [13] &quot;/artikel/2603837-verenigde-naties-willen-dat-nederland-meer-voor-vrouwen-doet&quot;                         
+## [14] &quot;/artikel/2605931-kamermeerderheid-inclusief-coalitiepartijen-toch-geen-versobering-ouderschapsverlof&quot;  
+## [15] &quot;/artikel/2603766-primeur-in-formule-1-bocht-bij-gp-australie-vernoemd-naar-vrouwelijke-sleutelfiguren&quot; 
+## [16] &quot;/artikel/2599387-chinese-vrouw-nagelt-vreemdgaande-man-aan-schandpaal-met-excuusfilmpjes&quot;              
+## [17] &quot;/artikel/2597328-vs-trekt-zich-terug-uit-tientallen-vn-organisaties&quot;                                   
+## [18] &quot;/artikel/2597334-wekdienst-8-1-kabinetsformatie-gaat-verder-nieuwe-zitting-kunstroof-drents-museum&quot;    
+## [19] &quot;/artikel/2593857-kamer-discriminatieverbod-gaat-boven-onderwijsvrijheid&quot;                               
+## [20] &quot;/artikel/2592317-cbs-aantal-vermoorde-vrouwen-door-ex-partner-blijft-gelijk&quot;                           
+## [21] &quot;/zoeken?q=gendergelijkheid&amp;page=0&quot;                                                                     
+## [22] &quot;/zoeken?q=gendergelijkheid&amp;page=1&quot;                                                                     
+## [23] &quot;/zoeken?q=gendergelijkheid&amp;page=2&quot;                                                                     
+## [24] &quot;/zoeken?q=gendergelijkheid&amp;page=3&quot;                                                                     
+## [25] &quot;/zoeken?q=gendergelijkheid&amp;page=4&quot;                                                                     
+## [26] &quot;/zoeken?q=gendergelijkheid&amp;page=5&quot;                                                                     
+## [27] &quot;/zoeken?q=gendergelijkheid&amp;page=6&quot;                                                                     
+## [28] &quot;/zoeken?q=gendergelijkheid&amp;page=2&quot;                                                                     
+## [29] &quot;/zoeken?q=gendergelijkheid&amp;page=1&quot;                                                                     
+## [30] &quot;/zoeken?q=gendergelijkheid&amp;page=2&quot;                                                                     
+## [31] &quot;/zoeken?q=gendergelijkheid&amp;page=3&quot;                                                                     
+## [32] &quot;/zoeken?q=gendergelijkheid&amp;page=4&quot;                                                                     
+## [33] &quot;/zoeken?q=gendergelijkheid&amp;page=5&quot;                                                                     
+## [34] &quot;/zoeken?q=gendergelijkheid&amp;page=2&quot;</code></pre>
+<pre class="r"><code>data &lt;- nos |&gt;
+  html_elements(&quot;time&quot;) |&gt;
+  html_text()
+data</code></pre>
+<pre><code>##  [1] &quot;donderdag, 00:33&quot;                &quot;donderdag 2 juli, 11:37&quot;        
+##  [3] &quot;maandag 22 juni, 20:07&quot;          &quot;woensdag, 22:04&quot;                
+##  [5] &quot;woensdag, 01:34&quot;                 &quot;donderdag, 18:32&quot;               
+##  [7] &quot;vrijdag 11 september, 13:57&quot;     &quot;vrijdag 17 juli, 14:00&quot;         
+##  [9] &quot;zondag 19 juli, 03:47&quot;           &quot;zondag 5 juli, 19:34&quot;           
+## [11] &quot;woensdag 29 april, 23:01&quot;        &quot;zaterdag 7 maart 2026, 07:04&quot;   
+## [13] &quot;dinsdag 24 februari 2026, 12:46&quot; &quot;woensdag 11 maart 2026, 17:35&quot;  
+## [15] &quot;maandag 23 februari 2026, 20:01&quot; &quot;vrijdag 23 januari 2026, 16:11&quot; 
+## [17] &quot;donderdag 8 januari 2026, 01:23&quot; &quot;donderdag 8 januari 2026, 06:29&quot;
+## [19] &quot;dinsdag 9 december 2025, 16:56&quot;  &quot;vrijdag 28 november 2025, 08:41&quot;</code></pre>
+<pre class="r"><code>length(titel)</code></pre>
+<pre><code>## [1] 20</code></pre>
+<pre class="r"><code>length(data)</code></pre>
+<pre><code>## [1] 20</code></pre>
+<pre class="r"><code>length(link)</code></pre>
+<pre><code>## [1] 34</code></pre>
+<pre class="r"><code>info &lt;- tibble(titel, data, link[1:20])
+
+information &lt;- info |&gt;
+  rename(Title = titel, Date = data, URL = `link[1:20]`) |&gt;
+  mutate(URL = paste0(&quot;https://nos.nl&quot;, URL))
+
+print(information[,&quot;URL&quot;])</code></pre>
+<pre><code>## # A tibble: 20 × 1
+##    URL                                                                                              
+##    &lt;chr&gt;                                                                                            
+##  1 https://nos.nl/artikel/2631322-nederland-zakt-verder-weg-op-wereldwijde-ranglijst-voor-gendergel…
+##  2 https://nos.nl/artikel/2621300-steeds-meer-amerikaanse-goede-doelen-vluchten-naar-nederland-om-t…
+##  3 https://nos.nl/artikel/2619817-moeders-gaan-meer-verdienen-als-de-vader-met-verlof-gaat-toont-ni…
+##  4 https://nos.nl/artikel/2631310-sportraad-richt-zich-op-een-advies-voor-2027-focus-op-positie-van…
+##  5 https://nos.nl/artikel/2631186-zevende-dode-vrouw-gevonden-bij-johannesburg-politie-waarschuwt-v…
+##  6 https://nos.nl/artikel/2631410-negende-dode-vrouw-gevonden-in-zuid-afrika-in-dezelfde-regio-bij-…
+##  7 https://nos.nl/artikel/2630574-italiaanse-politica-emma-bonino-overleden-voorvechter-voor-vrouwe…
+##  8 https://nos.nl/artikel/2623351-niet-prinsessen-maar-geadopteerde-mannen-moeten-japans-keizerlijk…
+##  9 https://nos.nl/artikel/2623566-andrew-tate-en-broer-aangehouden-in-miami-om-verkrachting-en-gewe…
+## 10 https://nos.nl/artikel/2621790-franse-rechtspraak-worstelt-met-zaken-over-partnergeweld-nog-lang…
+## 11 https://nos.nl/artikel/2612456-pride-amsterdam-genomineerd-voor-erfgoedlijst-unesco              
+## 12 https://nos.nl/artikel/2605267-kabinetsplannen-om-ouderschapsverlof-te-versoberen-stap-terug-voo…
+## 13 https://nos.nl/artikel/2603837-verenigde-naties-willen-dat-nederland-meer-voor-vrouwen-doet      
+## 14 https://nos.nl/artikel/2605931-kamermeerderheid-inclusief-coalitiepartijen-toch-geen-versobering…
+## 15 https://nos.nl/artikel/2603766-primeur-in-formule-1-bocht-bij-gp-australie-vernoemd-naar-vrouwel…
+## 16 https://nos.nl/artikel/2599387-chinese-vrouw-nagelt-vreemdgaande-man-aan-schandpaal-met-excuusfi…
+## 17 https://nos.nl/artikel/2597328-vs-trekt-zich-terug-uit-tientallen-vn-organisaties                
+## 18 https://nos.nl/artikel/2597334-wekdienst-8-1-kabinetsformatie-gaat-verder-nieuwe-zitting-kunstro…
+## 19 https://nos.nl/artikel/2593857-kamer-discriminatieverbod-gaat-boven-onderwijsvrijheid            
+## 20 https://nos.nl/artikel/2592317-cbs-aantal-vermoorde-vrouwen-door-ex-partner-blijft-gelijk</code></pre>
+<pre class="r"><code>View(information)</code></pre>
+</div>
 </div>
 </div>
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIjQwX2xhYjQiDQpvdXRwdXQ6IGh0bWxfZG9jdW1lbnQNCi0tLQ0KDQojIFdlZWsgNA0KDQojIyAuLg0K</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIjQwX2xhYjQiDQpvdXRwdXQ6IGh0bWxfZG9jdW1lbnQNCi0tLQ0KDQojIFdlZWsgNA0KDQojIyBEYXRhIHZpc3VhbGlzYXRpb25zDQoNCi0gU2VlIFNOQVNTIENoYXB0ZXIgOQ0KDQojIyMgQ3JlYXRlIGFuIGlncmFwaCBvYmplY3QNCg0KYGBge3J9DQpyZXF1aXJlKGlncmFwaCkNCmcgPC0gbWFrZV9ncmFwaCgiWmFjaGFyeSIpDQpwbG90KGcpDQoNCg0KIyBNeSBpbWFnZSBpcyBub3QgdGhlIHNhbWUgYXMgdGhlIG9uZSBpbiB0aGUgYm9vaw0KIyBTbyB0aGVyZSdzIGFuIGFsZ29yaXRobSB1bmRlcmx5aW5nIHRoZSBjYWxjdWxhdGlvbiAocmFuZG9tIGNvbXBvbmVudCkNCiMgQ2VudHJlIG9mIHRoZSBmaWd1cmUgZGV0ZXJtaW5lZCBiYXNlZCBvbiBwb3B1bGFyaXR5DQojIHJlbGF0aW9ucyBhcmUgdW5kaXJlY3RlZA0KIyBpcyB0aGF0IHRoZSBkZWZhdWx0IG9mIGlncmFwaCBvciBiZWNhdXNlIG9mIHRoZSBkYXRhPw0KYGBgDQoNCiMjIyBJbnNwZWN0IEFkamFjZW5jeSBNYXRyaXgNCg0KLSBHIGlzIGFuIGlncmFwaCBvYmplY3QNCg0KYGBge3J9DQpnbWF0IDwtIGFzX2FkamFjZW5jeV9tYXRyaXgoZywgdHlwZSA9ICJib3RoIiwgc3BhcnNlID0gRkFMU0UpDQojZ21hdA0KDQppc1N5bW1ldHJpYyhnbWF0KSAjIHVuZGlyZWN0ZWQNCmBgYA0KDQojIyMgRGVzY3JpcHRpdmVzDQoNCmBgYHtyfQ0KIyBTSVpFDQojIG51bWJlciBvZiBub2Rlcw0KdmNvdW50KGcpDQojIG51bWJlciBvZiBlZGdlcw0KZWNvdW50KGcpDQoNCiMgREVHUkVFDQppZ3JhcGg6OmRlZ3JlZShnKQ0KaGlzdCh0YWJsZShkZWdyZWUoZykpLCB4bGFiPSdpbmRlZ3JlZScsIG1haW49ICdIaXN0b2dyYW0gb2YgaW5kZWdyZWUnKQ0KDQojIFRSQU5TSVRJVklUWQ0KaWdyYXBoOjp0cmFuc2l0aXZpdHkoZywgdHlwZSA9IGMoImxvY2FsdW5kaXJlY3RlZCIpLCBpc29sYXRlcyA9IGMoIk5hTiIsICJ6ZXJvIikpDQoNCiMgQkVUV0VFTk5FU1MNCmlncmFwaDo6YmV0d2Vlbm5lc3MoZywgZGlyZWN0ZWQgPSBGQUxTRSkgIyBzaG9ydGVzdCBwYXRoIGxlbmd0aCBiZXR3ZWVuIHR3byBhY3RvcnMgYW5kIGhvdyBvZnRlbiBpcyBhY3RvciBBIGluY2x1ZGVkIGluIHRoZSBwYXRoPw0KDQojIHN0YW5kYXJkaXNlcmVuIGlzIGhhbmRpZyBhbHMgamUgbWVlcmRlcmUgbmV0d2Vya2VuIG1ldCBlbGthYXIgdmVyZ2VsaWprdA0KYGBgDQoNCi0gRW1waGFzaXplIG5vdGVzIHZpYSBjb2xvdXIgb3Igc2l6ZSAoY2hhbmdlICd1LXBhbGxldGUnIGRlcGVuZGluZyBvbiBsZXZlbCBvZiBiZXR3ZWVubmVzcykNCg0KLSBPciBjaGFuZ2UgdGhlIGxheS1vdXQgdG8gaGlnaGxpZ2h0IHRoZSBub3RlcyB3aXRoIGhpZ2ggbGV2ZWxzIG9mIGJldHdlZW5uZXNzDQoNCmBgYHtyfQ0KbGlicmFyeShwYW5kZXIpDQoNCmlncmFwaDo6ZHlhZF9jZW5zdXMoZykgDQoNCmlncmFwaDo6dHJpYWRfY2Vuc3VzKGcpDQoNCiMgSSB3aWxsIHVzZSBzbmEgYmVjYXVzZSBpdCBzaG93cyB0aGUgbmFtZXMgb2YgdGhlIHRyaWFkcyBhcyB3ZWxsDQpwYW5kZXIoc25hOjp0cmlhZC5jZW5zdXMoZ21hdCkpDQp1bmxvYWROYW1lc3BhY2UoInNuYSIpICANCiMgRGV0YWNoIHRoaXMgcGFja2FnZSBhZ2Fpbiwgb3RoZXJ3aXNlIGl0IHdpbGwgaW50ZXJmZXJlIHdpdGggYWxsIGtpbmQgb2YgZnVuY3Rpb25zIGZyb20gaWdyYXBoDQoNCiMgVHJhbnNpdGl2aXR5IGF0IHRoZSBuZXR3ZXJrIGxldmVsLCBudW1iZXIgb2YgY2xvc2VkIHRyaWFkcyBvZiBhbGwgdHJpYWRzIHRoYXQgY291bGQgYmUgY2xvc2VkIChhbGwgdHJpYWQgY29uZmlndXJhdGlvbnMgY29uc2lzdGluZyBvZiB0d28gdHJpYWRzKQ0KDQojIEVyIHppam4gZHJpZSBvcHRpZXMgbW9nZWxpamsgdm9vciBoZXQgc2x1aXRlbiB2YW4gMjAxIChBQi1DLCBBQy1CLCBCQy1BKQ0KIyBBbHMgd2UgMjAxIHNsdWl0ZW4sIGRhbiB3YXJlbiBlciBkcmllIG9wdGllcyB2b29yYWZnYWFuZA0KIyBFciB6aWpuIDM5MyBnZXNsb3RlbiAoMyBnZXNsb3RlbikNCg0KIyBEZWZpbml0aWUgdHJhbnNpdGl2aXRlaXQNCiMgSG9ldmVlbCB0cmlhZGVzIHppam4gZXIgZ2VzbG90ZW4gKDQ1ICogMykgLyANCiMgdG90YWFsIGdlc2xvdGVuIG5ldHdlcmtlbiBPRiBoYWRkZW4gZ2VzbG90ZW4ga3VubmVuIHdvcmRlbiAoKDQ1ICogMykgKyAzOTMpDQoNCmlncmFwaDo6dHJhbnNpdGl2aXR5KGcsIHR5cGUgPSAiZ2xvYmFsIikNCnNuYTo6Z3RyYW5zKGdtYXQpDQoNCnRyaWFkX2cgPC0gZGF0YS5mcmFtZShzbmE6OnRyaWFkLmNlbnN1cyhnbWF0KSkNCg0KdHJhbnNpdGl2aXR5X2cgPC0gKDMgKiB0cmlhZF9nJFgzMDApLyh0cmlhZF9nJFgyMDEgKyAzICogdHJpYWRfZyRYMzAwKQ0KdHJhbnNpdGl2aXR5X2cNCg0KIyByZWNpcHJvY2UgcmVsYXRpZXMgdGVsIGplIHR3ZWUga2VlciAoKjIpDQpgYGANCg0KLSBUcmFuc2l0aXZpdGVpdA0KDQogIC0gTG9rYWFsOiBiZXJlZGVuZWVyZCB2YW51aXQgZWdvDQoNCiAgLSBHbG9iYWFsOiBuZXR3ZXJrbml2ZWF1DQoNCiAgLSBPbSBuZXR3ZXJrZW4gdGUgdmVyZ2VsaWprZW46IHplbGZkZSBhYW50YWwgdnJpZW5kZW4gbWFhciBpbiBuZXR3ZXJrIEEgemlqbiBlciBkcmllaG9la2plcyB0ZXJ3aWpsIG5ldHdlcmsgQiBtaW5kZXIgaGVjaHQgaXMsIG9tZGF0IGVyIGdlZW4gdHJhbnNpdGl2aXRlaXQgaXMNCg0KIyMjIE5ldHdlcmsgdmlzdWFsaXNhdGlvbg0KDQpgYGB7cn0NCiMgY2hhbmdpbmcgVg0KVihnKSRzaXplID0gYmV0d2Vlbm5lc3MoZywgbm9ybWFsaXplZCA9IFQsIGRpcmVjdGVkID0gRkFMU0UpICogNjAgKyAxMA0KDQojIFYgPSB2ZXJ0aWNlcyAobm9kZXMpDQojIEUgPSBlZGdlcw0KIyBub3JtYWxpc2VyZW4NCiMgKiA2MCArIDEwIChvbSB0b3QgZWVuIGdvZWRlIGdyb290dGUgdGUga29tZW4pDQojICogNjAgKG9tZGF0IGJldHdlZW5uZXNzIHNjb3JlIHR1c3NlbiAwICYgMSkNCiMgKyAxMCAob21kYXQgYW5kZXJzIG1lbnNlbiB6b25kZXIgYmV0d2Vlbm5lc3MgZ2VlbiBib2xsZXRqZSBrcmlqZ2VuKQ0KDQojIGFmdGVyIHNvbWUgdHJpYWwgYW5kIGVycm9yDQpwbG90KGcsIG1vZGUgPSAidW5kaXJlY3RlZCIpDQoNCiMgdm9vcmFmIGdyb290dGUgcGxvdHdpbmRvdyBkZWZpbmnDq3Jlbg0KIyB2b2xsZWRpZyBBNCBzaXplIGlzIGVlbiBiZWdpbnB1bnQNCiMgZW4gZGFuIGFsbGUgcGxhYXRqZXMgbWFrZW4NCiMgd2Vnc2NoaWp2ZW4gYWxzIC5QTkcNCmBgYA0KDQpgYGB7cn0NCnNldC5zZWVkKDIzNDUpDQoNCmwgPC0gbGF5b3V0X3dpdGhfbWRzKGcpICAjIGh0dHBzOi8vaWdyYXBoLm9yZy9yL2RvYy9sYXlvdXRfd2l0aF9tZHMuaHRtbA0KcGxvdChnLCBsYXlvdXQgPSBsKQ0KDQoNCmBgYA0KDQpgYGB7cn0NCiMgTGl0dGxlIGZ1cnRoZXIgYXBhcnQgKG1hbnVhbGx5KQ0KDQpsICAjIGxldCB1cyB0YWtlIGEgbG9vayBhdCB0aGUgY29vcmRpbmF0ZXMNCmxbMSwgMV0gPC0gNA0KbFszNCwgMV0gPC0gLTMuNQ0KcGxvdChnLCBsYXlvdXQgPSBsKQ0KDQojIHBsYWF0amUgbWV0IHR3ZWUgbm9kZXMgYWFuIGRlIGJ1aXRlbmthbnQgKHRyZWtrZW4gYmVpZGUpDQojIHBsYWF0amUgbGFhdCBwb2xhcmlzYXRpZSB6aWVuDQojIGFscyBqZSB6byduIGZpZ3V1ciBpbiBlZW4gYXJpdGtlbCBwdWJsaWNlZXJ0LCBhbHRpamQgYmVub2VtZW4gZGF0IDEgZW4gMzQgaGFuZG1hdGlnIGFhbiBkZSBidWl0ZW5rYW50IHppam4gZ2VwbGFhdHN0IG9tIHRlIGlsbHVzdHJlcmVuIHdhdCBlciB3b3JkdCBnZXZvbmRlbiAoYW5kZXJzIG5laWdodCBoZXQgbmFhciBkYXRhbWFuaXB1bGF0aWUpDQojIFRha2UtaG9tZSBtZXNzYWdlOiBwbGFhdGplcyB6aWpuIG5pZXQgbmV1dHJhYWwNCmBgYA0KDQpgYGB7cn0NCnBsb3QoZywgbGF5b3V0ID0gbCwgbWFyZ2luID0gYygwLCAwLCAwLCAwKSkNCmxlZ2VuZCh4ID0gLTIsIHkgPSAtMS41LCBjKCJOb3RlOiB0aGUgcG9zaXRpb24gb2Ygbm9kZXMgMSBhbmQgMzQgaGF2ZSBiZWVuIHNldCBieSBKb2NoZW0gVG9sc21hIFxuIGZvciB2aXN1YWxpc2F0aW9uIHB1cnBvc2VzIG9ubHkgYW5kIGRvIG5vdCByZWZsZWN0IG5ldHdvcmsgcHJvcGVydGllcyIpLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBidHkgPSAibiIsIGNleCA9IDAuOCkNCg0KYGBgDQoNCiMjIyBUd2l0dGVyc3BoZXJlDQoNCmBgYHtyfQ0KbG9hZCgiLi9kYXRhL3R3aXR0ZXJfMjAxOTA5MTkuUkRhdGEiKSAgDQojc3RyKHR3aXR0ZXJfMjAxOTA5MTksIDEpDQpgYGANCg0KYGBge3J9DQp0ZXN0bSA8LSBtYXRyaXgoTkEsIG5yb3cgPSA0LCBuY29sID0gNCkNCnRlc3RtDQpjbGFzcyh0ZXN0bSkNCg0KdGVzdG1bMSxdIDwtIGMoMCwxLE5BLDEpDQp0ZXN0bVszLF0gPC0gYygwLDEsTkEsMSkNCnRlc3RtWzQsXSA8LSBjKDAsMSxOQSwwKQ0KdGVzdG0NCg0KaXMubmEodGVzdG0pDQpjbGFzcyh0ZXN0bSkNCg0KbXJvdyA8LSByb3dTdW1zKGlzLm5hKHRlc3RtKSkgPT0gbnJvdyh0ZXN0bSkNCm1jb2wgPC0gY29sU3Vtcyhpcy5uYSh0ZXN0bSkpID09IG5yb3codGVzdG0pDQoNCm1yb3cgJiBtY29sIA0KbXRvdGFsIDwtIHdoaWNoKG1yb3cgJiBtY29sKQ0KIyBzdGVsIDIsIGRhbiB3ZWV0IGplIHJpaiAyIGVuIGNvbHVtbiAyIGt1bm5lbiB1aXQgZGUgZGF0YQ0KDQp3aGljaChtcm93KSAjIHdlbGtlIHJpaiB3aWxsZW4gd2UgdmVydmFuZ2VuDQp3aGljaChtY29sKSAjIHdlbGtlIGtvbG9tIHdpbGxlbiB3ZSB2ZXJ2YW5nZW4NCg0KdGVzdG1bd2hpY2gobXJvdyksXSA8LSAwDQp0ZXN0bVssd2hpY2gobWNvbCldIDwtIDANCiANCnRlc3RtW2lzLm5hKHRlc3RtKV0gPC0gMCAjIHZvb3IgaGV0IHBsb3R0ZW4gbW9ldGVuIHdlIE5BID0gMCAobmlldCB2b29yIFJzaWVuYSkNCnRlc3RtICMgZGl0IGlzIGVlbiBib3R0ZSBiaWpsLCB2b29yIHBsb3R0ZW4gcHJpbWEgbWFhciB2b29yIFJzaWVuYSBtaW5kZXINCmBgYA0KDQojIyBXZWJzY3JhcGluZyAoQ2hhcHRlciA5IGluIFNOQVNTKQ0KDQooMSkgR3Jvb3RzY2hhbGlnICgyKSBUaW1lLXN0YW1wZWQgZGF0YSAoMykgT2JzZXJ2ZXJlbiAoaW5mb3JtYXRpZSBuaWV0IGluIHN1cnZleXMpDQoNCi0gSW5mb3JtYXRpZSB2YW4gaW50ZXJuZXQgYWZoYWxlbiBvcCBnZWF1dG9tYXRpc2VlcmRlIHdpanplDQoNCi0gRGF0YS1zaGFyaW5nDQoNCiAgLSBNZXQgdG9lc3RlbW1pbmcgd2hhdHNhcHAgZGF0YSBhbmFseXNlcmVuIChuZXR3ZXJrZW4gY29uc3RydWVyZW4pDQoNCiAgLSBCaWp2b29yYmVlbGQgb2YgdGVsZWZvb25zIGluIGVsa2FhcnMgYnV1cnQgemlqbiBnZXdlZXN0DQoNCiAgICAtIE9mIGRlIHRlbGVmb29uIHZhbiBBIGVlbiBibHVldG9vdGggdmVyem9layBuYWFyIGRlIHRlbGVmb29uIHZhbiBCIGhlZWZ0IGdlc3R1dXJkDQoNCi0gT2JqZWN0aWV2ZSBkYXRhIChnZW9ic2VydmVlcmQpIGluIHBsYWF0cyB2YW4gc3VydmV5ZGF0YSAobmFhciBlaWdlbiB6ZWdnZW4pDQoNCi0gSG9lIHNhbXBsZSBqZSBkZXplIGRhdGE/IFdhdCBpcyBkZSBwb3B1bGF0aWUgdmFuIGJlcmljaHRlbj8gV2FubmVlciBzdG9wIGplPw0KDQogIC0gQWxzIGplIHdpbHQgb25kZXJ6b2VrZW4gd2llIG5hYXIgZGUgRWZ0ZWxpbmcgZ2FhdA0KDQogIC0gVmlhIGhldCBvbmRlcnpvZWtlbiB2YW4gc29jaWFsLW1lZGlhIHBvc3RzDQoNCiAgLSBEYW4gbWlzIGplIG1lbnNlbiBkaWUgbmlldCBwb3N0ZW4gKHNlbGVjdGl2aXRlaXQpDQoNCi0gRXRoaWNzDQoNCiAgLSBNYWcgamUgZ2VhdXRvbWF0aXNlZXJkIGluZm9ybWF0aWUgdmFuIGhldCBpbnRlcm5ldCBoYWxlbj8gV2Vic2l0ZXMgaGViYmVuIHZhYWsgcm9ib3QtZXhjbHVzaW9uIHByb3RvY29sbGVuIGRpZSBnZWF1dG9tYXRpc2VlcmRlIGRhdGF2ZXJ6YW1lbGluZyB2ZXJiaWVkZW4NCg0KICAtIE1hZyBoZXQgdmFuIGRlIGVpZ2VuYWFyPyBNYWcgaGV0IHZhbiBkZSB3ZXQ/ICpXYXQgdmluZCBqZSB6ZWxmIChiZWxhbmdyaWprc3RlKT8qDQoNCiAgICAtIEtpamsgbmFhciBkZSBiZXJvZXBzY29kZSB2YW4gc29jaW9sb2dlbiAmIHdldGVuc2NoYXBwZWxpamtlIGludGVncml0ZWl0DQoNCiAgICAtIFZvb3IgZWVuIHBhcGVyLCB6b3JnIGRhdCBqZSBsYW5ncyBlZW4gZXRoaXNjaGUgY29tbWlzc2llIGdhYXQNCg0KIyMjIEhhbmRtYXRpZw0KDQojIyMgRGF0YSB2cmFnZW4gYWFuIGVpZ2VuYWFyDQoNCiMjIyBBUElzICh3ZWJzaXRlcyBiZWRvZWxkIG9tIHRlIHNjcmFwZW4pDQoNCiMjIyBXZWJzY3JhcGluZyAoQUtBIGNyYXdsaW5nIHRlY2huaWVrZW4pICh2b29yYmVlbGQ6IE5PUyBzY3JhcGVuKQ0KDQpgYGB7cn0NCnJlcXVpcmUocnZlc3QpDQpyZXF1aXJlKHhtbDIpDQpgYGANCg0KLSBHYSBuYWFyIE5PUy5ubCBlbiBnYSBuYWFyICdab2VrZW4nDQoNCi0gWmllIGRlIFVSTA0KDQotIHE9am9jaGVtK3RvbHNtYSAoem9la3Rlcm1lbikNCg0KLSAmIHBhZ2U9MSAoYWFudGFsIHBhZ2luYSdzKQ0KDQotIDxodHRwczovL25vcy5ubC96b2VrZW4/cT1nZW5kZXJnZWxpamtoZWlkJnBhZ2U9MT4NCg0KLSBSZWNodGVybXVpc2tub3AsIGluc3BlY3RlcmVuIChvcGVuIERldlRvb2xzKSwgRWxlbWVudHMNCg0KLSBFZW4gd2VicGFnaW5hIGhlZWZ0IGVlbiBoaWVyYXJjaGlzY2hlIHN0cnVjdHV1cg0KDQogIC0gT3BnZWJvdXdkLCBzdWJvbmRlcmRlbGVuIG1ldCBlaWdlbnNjaGFwcGVuLCBuYW1lbiwgSURzDQoNCi0gS2lqayBiaWogJ2JvZHknDQoNCiAgLSBCZXN0YWF0IHVpdCBlZW4gdGl0ZWwsIGJvdmVua2FudCwgbWFpbiwgZW4gZm9vdGVyIChvbmRlcnBhZ2luYSkNCg0KICAtIE1lZXN0YWwgeml0IHdhYXIgamUgZ2XDr250ZXJlc2VlcmQgYmVudCBpbiAqbWFpbioNCg0KICAgIC0gRGFhcmJpbm5lbiB6b2VrIGplICpkaXYqIGVuIHVpdGVpbmRlbGlqayBqZSBvbmRlcmRlZWwNCg0KICAgIC0gSmUgem9la3QgZWVuIHNvb3J0IHRhYmxlIChVTCkgb2YgbGlzdCAoTEkpIGluIFVMDQoNCiAgICAtIFppZSBlZW4gaHJlZiwgem9layBkZSB0aW1lLXN0YXAsIHpvZWsgdGl0ZWwNCg0KYGBge3J9DQpsaWJyYXJ5KHJ2ZXN0KQ0KbGlicmFyeSh0aWR5dmVyc2UpDQoNCnVybCA8LSAiaHR0cHM6Ly9ub3Mubmwvem9la2VuP3E9Z2VuZGVyZ2VsaWpraGVpZCZwYWdlPTEiDQpub3MgPC0gcmVhZF9odG1sKHVybCkNCm5vcw0KDQojIGJla2lqayBmdW5jdGllcyBpbiBlZW4gcGFja2FnZQ0KIyA/cnZlc3QgKHppZSBpbmRleCkNCg0KIyBvcHNsYWFuIGFscyBYTUwgbm90ZXNldCAobWV0IHN1Ym5vdGVzLCB3YW50IGhpZXJhcmNoaXNjaGUgd2VicGFnaW5hKQ0KDQpsaWpzdCA8LSBub3MgJT4lIGh0bWxfZWxlbWVudHMoIm1haW4iKSAlPiUNCiAgaHRtbF9lbGVtZW50cygidWwiKSAlPiUgIyBlZXJzdGUgdWwgaXMgd2F0IHdlIG5vZGlnIGhlYmJlbg0KICBodG1sX2VsZW1lbnRzKCJsaSIpICMgZGFhcmJpbm5lbiB3aWxsZW4gd2UgYWxsZSBsaXN0LWVsZW1lbnRlbg0KDQojIGh0bWxfY2hpbGRyZW4oKSB3YXQgeml0IGVyb25kZXI/DQpsaWpzdFsxXSAlPiUgaHRtbF9jaGlsZHJlbg0KbGlqc3RbMV0gJT4lIGh0bWxfY2hpbGRyZW4gJT4lIGh0bWxfY2hpbGRyZW4NCg0KbGlqc3RbMV0gJT4lIGh0bWxfY2hpbGRyZW4oKSAlPiUgaHRtbF9hdHRycygpICMga2lqayB3ZWxrZSBlbGVtZW50ZW4gaW4gZGl0IG9iamVjdA0KYXJ0aWtlbDEgPC0gbGlqc3RbMV0gJT4lIGh0bWxfY2hpbGRyZW4oKSAlPiUgaHRtbF9hdHRyKG5hbWUgPSAiaHJlZiIpICMgem8gcGFrIGplIHdlYnNpdGUNCiMgaHJlZiBpcyBkZSBsaW5rDQojIHdlIGhlYmJlbiBoZXQgbnUgZ2VyZXRyaWV2ZWQsIG1vZXRlbiBoZXQgbm9nIG9wc2xhYW4gaW4gZWVuIGRhdGFiZXN0YW5kDQoNCiMgd2VlciBlZW4gd2Vic2l0ZSB2YW4gbWFrZW46IA0KcGFzdGUwKCJodHRwczovL25vcy5ubCIsIGFydGlrZWwxKQ0KDQp0aW1lIDwtIG5vcyAlPiUgaHRtbF9lbGVtZW50cygibWFpbiIpICU+JQ0KICBodG1sX2VsZW1lbnRzKCJ1bCIpICU+JSANCiAgaHRtbF9lbGVtZW50cygibGkiKSAlPiUNCiAgaHRtbF9lbGVtZW50cygidGltZSIpICMgb20gdGlqZCBpbmZvcm1hdGllIHRlIHJldHJpZXZlbg0KDQp0aW1lWzFdICU+JSBodG1sX2F0dHIobmFtZSA9ICJkYXRldGltZSIpICMgaGllciANCiM/aHRtbF90ZXh0KCkNCg0KIyA8PiBoaWVyIHR1c3NlbmluIHN0YWF0IGVlbiBodG1sIHRhZw0KDQojIGh0bWxfZWxlbWVudCgpIHpvZWtlbiBvcCBiYXNpcyB2YW4gY3NzIG9mIHhwYXRoDQojIGdhIG5hYXIgd2ViIGJyb3dzZXIgZW4gd2Vic2l0ZSwga2xpayBvcCBoZXQganVpc3RlIGVsZW1lbnQgDQojIGJpanZvb3JiZWVsZCA8ZGl2IGNsYXNzPiBlbiBkYW4ga2llcyBqZSBjb3B5IHhQYXRoIG9mIGNvcHkgRnVsbCB4cGF0aA0KIyAvaHRtbC9ib2R5L2Rpdi9tYWluL2RpdlsyXSANCg0KdGl0ZWwgPC0gbm9zIHw+DQogIGh0bWxfZWxlbWVudHMoIi5rWUJycmwiKSB8Pg0KICBodG1sX3RleHQoKQ0KdGl0ZWwNCg0KbGluayA8LSBub3MgfD4gaHRtbF9lbGVtZW50cygibWFpbiIpIHw+IA0KICBodG1sX2VsZW1lbnRzKCJ1bCIpIHw+DQogIGh0bWxfZWxlbWVudHMoImxpIikgfD4NCiAgaHRtbF9lbGVtZW50cygiYSIpIHw+DQogIGh0bWxfYXR0cihuYW1lID0gImhyZWYiKQ0KbGluaw0KDQpkYXRhIDwtIG5vcyB8Pg0KICBodG1sX2VsZW1lbnRzKCJ0aW1lIikgfD4NCiAgaHRtbF90ZXh0KCkNCmRhdGENCg0KbGVuZ3RoKHRpdGVsKQ0KbGVuZ3RoKGRhdGEpDQpsZW5ndGgobGluaykNCg0KaW5mbyA8LSB0aWJibGUodGl0ZWwsIGRhdGEsIGxpbmtbMToyMF0pDQoNCmluZm9ybWF0aW9uIDwtIGluZm8gfD4NCiAgcmVuYW1lKFRpdGxlID0gdGl0ZWwsIERhdGUgPSBkYXRhLCBVUkwgPSBgbGlua1sxOjIwXWApIHw+DQogIG11dGF0ZShVUkwgPSBwYXN0ZTAoImh0dHBzOi8vbm9zLm5sIiwgVVJMKSkNCg0KcHJpbnQoaW5mb3JtYXRpb25bLCJVUkwiXSkNCg0KVmlldyhpbmZvcm1hdGlvbikNCmBgYA0K</div>
 
 
 </div>

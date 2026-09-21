@@ -1,0 +1,62 @@
+---
+title: "Z_handigheidjes"
+output: html_document
+---
+
+## PDF version
+
+\<iframe src="Presentations/socialnetworks_presentation_1.pdf" width="100%" height="700xp" style="border:none;"\>
+
+\</iframe\>
+
+<br>
+
+<br>
+
+## Google Slides version
+
+\<iframe src="[https://docs.google.com/presentation/d/e/2PACX-1vReOddS-Rv1RpxNJeoRuMjz-Bn-sDeDoT04tVIMkqhRS2xNCUePiPmlVGYqqflBtuWvmI25rJxWu4Kq/pubembed?start=false&loop=false&delayms=3000"](https://docs.google.com/presentation/d/e/2PACX-1vReOddS-Rv1RpxNJeoRuMjz-Bn-sDeDoT04tVIMkqhRS2xNCUePiPmlVGYqqflBtuWvmI25rJxWu4Kq/pubembed?start=false&loop=false&delayms=3000%22) frameborder="0" width="960" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"\>
+
+\</iframe\>
+
+## Webscrapen
+
+```{r}
+library(rvest)
+library(tidyverse)
+
+url <- "https://nos.nl/zoeken?q=gendergelijkheid&page=1"
+nos <- read_html(url)
+nos
+
+titel <- nos |>
+  html_elements(".kYBrrl") |>
+  html_text()
+titel
+
+link <- nos |> html_elements("main") |> 
+  html_elements("ul") |>
+  html_elements("li") |>
+  html_elements("a") |>
+  html_attr(name = "href")
+link
+
+data <- nos |>
+  html_elements("time") |>
+  html_text()
+data
+
+length(titel)
+length(data)
+length(link)
+
+info <- tibble(titel, data, link[1:20])
+
+information <- info |>
+  rename(Title = titel, Date = data, URL = `link[1:20]`) |>
+  mutate(URL = paste0("https://nos.nl", URL))
+
+print(information[,"URL"])
+
+View(information)
+```

@@ -37,7 +37,7 @@ klippy::klippy(position = c('top', 'right'))
 
 <br>
 
-## Article 2: 
+## Article 2:
 
 <iframe src="Presentations/Article2.pdf" width="100%" height="700xp" style="border:none;">
 
