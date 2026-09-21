@@ -56,7 +56,8 @@ information <- info |>
   rename(Title = titel, Date = data, URL = `link[1:20]`) |>
   mutate(URL = paste0("https://nos.nl", URL))
 
-print(information[,"URL"])
+#print(information[,"URL"])
 
 View(information)
+information
 ```
