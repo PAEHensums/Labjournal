@@ -356,6 +356,9 @@ div.tocify {
     <li>
       <a href="40_lab4.html">Week 4</a>
     </li>
+    <li>
+      <a href="50_lab5.html">Week 5</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -374,6 +377,9 @@ div.tocify {
     <li>
       <a href="C_data.html">Data</a>
     </li>
+    <li>
+      <a href="Z_FinalProject.html">R</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -389,7 +395,7 @@ div.tocify {
   </ul>
 </li>
 <li>
-  <a href="Z_handigheidjes.html">Handigheidjes</a>
+  <a href="Z_handigheidjes.html">Stuff to share</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -459,24 +465,24 @@ titel</code></pre>
 ##  [2] &quot;Steeds meer Amerikaanse goede doelen vluchten naar Nederland om Trump&quot;                 
 ##  [3] &quot;Moeders gaan meer verdienen als de vader met verlof gaat, toont nieuw onderzoek&quot;       
 ##  [4] &quot;Sportraad richt zich op één advies voor 2027: focus op positie van vrouwen in de sport&quot;
-##  [5] &quot;Zevende dode vrouw gevonden bij Johannesburg, politie waarschuwt vrouwen&quot;              
-##  [6] &quot;Negende dode vrouw gevonden in Zuid-Afrika in dezelfde regio bij Johannesburg&quot;         
-##  [7] &quot;Italiaanse politica Emma Bonino overleden, voorvechter voor vrouwenrechten &quot;           
-##  [8] &quot;Niet prinsessen maar geadopteerde mannen moeten Japans keizerlijk huis redden&quot;         
-##  [9] &quot;Andrew Tate en broer aangehouden in Miami om verkrachting en geweld &quot;                  
-## [10] &quot;Franse rechtspraak worstelt met zaken over partnergeweld: &#39;Nog lange weg te gaan&#39;&quot;     
-## [11] &quot;Pride Amsterdam genomineerd voor erfgoedlijst Unesco&quot;                                  
-## [12] &quot;Kabinetsplannen om ouderschapsverlof te versoberen &#39;stap terug voor gendergelijkheid&#39;&quot; 
-## [13] &quot;Verenigde Naties willen dat Nederland meer voor vrouwen doet&quot;                          
-## [14] &quot;Kamermeerderheid inclusief coalitiepartijen: toch geen versobering ouderschapsverlof&quot;  
-## [15] &quot;Primeur in Formule 1: bocht bij GP Australië vernoemd naar vrouwelijke sleutelfiguren&quot; 
-## [16] &quot;Chinese vrouw nagelt vreemdgaande man aan schandpaal met &#39;excuusfilmpjes&#39;&quot;             
-## [17] &quot;VS trekt zich terug uit tientallen VN-organisaties&quot;                                    
-## [18] &quot;Wekdienst 8/1: Kabinetsformatie gaat verder • Nieuwe zitting kunstroof Drents Museum&quot;  
-## [19] &quot;Kamer: discriminatieverbod gaat boven onderwijsvrijheid&quot;                               
-## [20] &quot;CBS: aantal vermoorde vrouwen door (ex-)partner blijft gelijk&quot;</code></pre>
+##  [5] &quot;Verkiezing vervanger voor afzwaaiende VN-chef Guterres verloopt stroef&quot;                
+##  [6] &quot;Zevende dode vrouw gevonden bij Johannesburg, politie waarschuwt vrouwen&quot;              
+##  [7] &quot;Negende dode vrouw gevonden in Zuid-Afrika in dezelfde regio bij Johannesburg&quot;         
+##  [8] &quot;Italiaanse politica Emma Bonino overleden, voorvechter voor vrouwenrechten &quot;           
+##  [9] &quot;Niet prinsessen maar geadopteerde mannen moeten Japans keizerlijk huis redden&quot;         
+## [10] &quot;Andrew Tate en broer aangehouden in Miami om verkrachting en geweld &quot;                  
+## [11] &quot;Franse rechtspraak worstelt met zaken over partnergeweld: &#39;Nog lange weg te gaan&#39;&quot;     
+## [12] &quot;Pride Amsterdam genomineerd voor erfgoedlijst Unesco&quot;                                  
+## [13] &quot;Kabinetsplannen om ouderschapsverlof te versoberen &#39;stap terug voor gendergelijkheid&#39;&quot; 
+## [14] &quot;Verenigde Naties willen dat Nederland meer voor vrouwen doet&quot;                          
+## [15] &quot;Kamermeerderheid inclusief coalitiepartijen: toch geen versobering ouderschapsverlof&quot;  
+## [16] &quot;Primeur in Formule 1: bocht bij GP Australië vernoemd naar vrouwelijke sleutelfiguren&quot; 
+## [17] &quot;Chinese vrouw nagelt vreemdgaande man aan schandpaal met &#39;excuusfilmpjes&#39;&quot;             
+## [18] &quot;VS trekt zich terug uit tientallen VN-organisaties&quot;                                    
+## [19] &quot;Wekdienst 8/1: Kabinetsformatie gaat verder • Nieuwe zitting kunstroof Drents Museum&quot;  
+## [20] &quot;Kamer: discriminatieverbod gaat boven onderwijsvrijheid&quot;</code></pre>
 <pre class="r"><code>link &lt;- nos |&gt; html_elements(&quot;main&quot;) |&gt; 
-  html_elements(&quot;ul&quot;) |&gt;
+  html_element(&quot;ul&quot;) |&gt; 
   html_elements(&quot;li&quot;) |&gt;
   html_elements(&quot;a&quot;) |&gt;
   html_attr(name = &quot;href&quot;)
@@ -485,60 +491,46 @@ link</code></pre>
 ##  [2] &quot;/artikel/2621300-steeds-meer-amerikaanse-goede-doelen-vluchten-naar-nederland-om-trump&quot;                
 ##  [3] &quot;/artikel/2619817-moeders-gaan-meer-verdienen-als-de-vader-met-verlof-gaat-toont-nieuw-onderzoek&quot;       
 ##  [4] &quot;/artikel/2631310-sportraad-richt-zich-op-een-advies-voor-2027-focus-op-positie-van-vrouwen-in-de-sport&quot;
-##  [5] &quot;/artikel/2631186-zevende-dode-vrouw-gevonden-bij-johannesburg-politie-waarschuwt-vrouwen&quot;              
-##  [6] &quot;/artikel/2631410-negende-dode-vrouw-gevonden-in-zuid-afrika-in-dezelfde-regio-bij-johannesburg&quot;        
-##  [7] &quot;/artikel/2630574-italiaanse-politica-emma-bonino-overleden-voorvechter-voor-vrouwenrechten&quot;            
-##  [8] &quot;/artikel/2623351-niet-prinsessen-maar-geadopteerde-mannen-moeten-japans-keizerlijk-huis-redden&quot;        
-##  [9] &quot;/artikel/2623566-andrew-tate-en-broer-aangehouden-in-miami-om-verkrachting-en-geweld&quot;                  
-## [10] &quot;/artikel/2621790-franse-rechtspraak-worstelt-met-zaken-over-partnergeweld-nog-lange-weg-te-gaan&quot;       
-## [11] &quot;/artikel/2612456-pride-amsterdam-genomineerd-voor-erfgoedlijst-unesco&quot;                                 
-## [12] &quot;/artikel/2605267-kabinetsplannen-om-ouderschapsverlof-te-versoberen-stap-terug-voor-gendergelijkheid&quot;  
-## [13] &quot;/artikel/2603837-verenigde-naties-willen-dat-nederland-meer-voor-vrouwen-doet&quot;                         
-## [14] &quot;/artikel/2605931-kamermeerderheid-inclusief-coalitiepartijen-toch-geen-versobering-ouderschapsverlof&quot;  
-## [15] &quot;/artikel/2603766-primeur-in-formule-1-bocht-bij-gp-australie-vernoemd-naar-vrouwelijke-sleutelfiguren&quot; 
-## [16] &quot;/artikel/2599387-chinese-vrouw-nagelt-vreemdgaande-man-aan-schandpaal-met-excuusfilmpjes&quot;              
-## [17] &quot;/artikel/2597328-vs-trekt-zich-terug-uit-tientallen-vn-organisaties&quot;                                   
-## [18] &quot;/artikel/2597334-wekdienst-8-1-kabinetsformatie-gaat-verder-nieuwe-zitting-kunstroof-drents-museum&quot;    
-## [19] &quot;/artikel/2593857-kamer-discriminatieverbod-gaat-boven-onderwijsvrijheid&quot;                               
-## [20] &quot;/artikel/2592317-cbs-aantal-vermoorde-vrouwen-door-ex-partner-blijft-gelijk&quot;                           
-## [21] &quot;/zoeken?q=gendergelijkheid&amp;page=0&quot;                                                                     
-## [22] &quot;/zoeken?q=gendergelijkheid&amp;page=1&quot;                                                                     
-## [23] &quot;/zoeken?q=gendergelijkheid&amp;page=2&quot;                                                                     
-## [24] &quot;/zoeken?q=gendergelijkheid&amp;page=3&quot;                                                                     
-## [25] &quot;/zoeken?q=gendergelijkheid&amp;page=4&quot;                                                                     
-## [26] &quot;/zoeken?q=gendergelijkheid&amp;page=5&quot;                                                                     
-## [27] &quot;/zoeken?q=gendergelijkheid&amp;page=6&quot;                                                                     
-## [28] &quot;/zoeken?q=gendergelijkheid&amp;page=2&quot;                                                                     
-## [29] &quot;/zoeken?q=gendergelijkheid&amp;page=1&quot;                                                                     
-## [30] &quot;/zoeken?q=gendergelijkheid&amp;page=2&quot;                                                                     
-## [31] &quot;/zoeken?q=gendergelijkheid&amp;page=3&quot;                                                                     
-## [32] &quot;/zoeken?q=gendergelijkheid&amp;page=4&quot;                                                                     
-## [33] &quot;/zoeken?q=gendergelijkheid&amp;page=5&quot;                                                                     
-## [34] &quot;/zoeken?q=gendergelijkheid&amp;page=2&quot;</code></pre>
+##  [5] &quot;/artikel/2632322-verkiezing-vervanger-voor-afzwaaiende-vn-chef-guterres-verloopt-stroef&quot;               
+##  [6] &quot;/artikel/2631186-zevende-dode-vrouw-gevonden-bij-johannesburg-politie-waarschuwt-vrouwen&quot;              
+##  [7] &quot;/artikel/2631410-negende-dode-vrouw-gevonden-in-zuid-afrika-in-dezelfde-regio-bij-johannesburg&quot;        
+##  [8] &quot;/artikel/2630574-italiaanse-politica-emma-bonino-overleden-voorvechter-voor-vrouwenrechten&quot;            
+##  [9] &quot;/artikel/2623351-niet-prinsessen-maar-geadopteerde-mannen-moeten-japans-keizerlijk-huis-redden&quot;        
+## [10] &quot;/artikel/2623566-andrew-tate-en-broer-aangehouden-in-miami-om-verkrachting-en-geweld&quot;                  
+## [11] &quot;/artikel/2621790-franse-rechtspraak-worstelt-met-zaken-over-partnergeweld-nog-lange-weg-te-gaan&quot;       
+## [12] &quot;/artikel/2612456-pride-amsterdam-genomineerd-voor-erfgoedlijst-unesco&quot;                                 
+## [13] &quot;/artikel/2605267-kabinetsplannen-om-ouderschapsverlof-te-versoberen-stap-terug-voor-gendergelijkheid&quot;  
+## [14] &quot;/artikel/2603837-verenigde-naties-willen-dat-nederland-meer-voor-vrouwen-doet&quot;                         
+## [15] &quot;/artikel/2605931-kamermeerderheid-inclusief-coalitiepartijen-toch-geen-versobering-ouderschapsverlof&quot;  
+## [16] &quot;/artikel/2603766-primeur-in-formule-1-bocht-bij-gp-australie-vernoemd-naar-vrouwelijke-sleutelfiguren&quot; 
+## [17] &quot;/artikel/2599387-chinese-vrouw-nagelt-vreemdgaande-man-aan-schandpaal-met-excuusfilmpjes&quot;              
+## [18] &quot;/artikel/2597328-vs-trekt-zich-terug-uit-tientallen-vn-organisaties&quot;                                   
+## [19] &quot;/artikel/2597334-wekdienst-8-1-kabinetsformatie-gaat-verder-nieuwe-zitting-kunstroof-drents-museum&quot;    
+## [20] &quot;/artikel/2593857-kamer-discriminatieverbod-gaat-boven-onderwijsvrijheid&quot;</code></pre>
 <pre class="r"><code>data &lt;- nos |&gt;
   html_elements(&quot;time&quot;) |&gt;
   html_text()
 data</code></pre>
-<pre><code>##  [1] &quot;donderdag, 00:33&quot;                &quot;donderdag 2 juli, 11:37&quot;        
-##  [3] &quot;maandag 22 juni, 20:07&quot;          &quot;woensdag, 22:04&quot;                
-##  [5] &quot;woensdag, 01:34&quot;                 &quot;donderdag, 18:32&quot;               
-##  [7] &quot;vrijdag 11 september, 13:57&quot;     &quot;vrijdag 17 juli, 14:00&quot;         
-##  [9] &quot;zondag 19 juli, 03:47&quot;           &quot;zondag 5 juli, 19:34&quot;           
-## [11] &quot;woensdag 29 april, 23:01&quot;        &quot;zaterdag 7 maart 2026, 07:04&quot;   
-## [13] &quot;dinsdag 24 februari 2026, 12:46&quot; &quot;woensdag 11 maart 2026, 17:35&quot;  
-## [15] &quot;maandag 23 februari 2026, 20:01&quot; &quot;vrijdag 23 januari 2026, 16:11&quot; 
-## [17] &quot;donderdag 8 januari 2026, 01:23&quot; &quot;donderdag 8 januari 2026, 06:29&quot;
-## [19] &quot;dinsdag 9 december 2025, 16:56&quot;  &quot;vrijdag 28 november 2025, 08:41&quot;</code></pre>
+<pre><code>##  [1] &quot;donderdag 17 september, 00:33&quot;   &quot;donderdag 2 juli, 11:37&quot;        
+##  [3] &quot;maandag 22 juni, 20:07&quot;          &quot;woensdag 16 september, 22:04&quot;   
+##  [5] &quot;donderdag, 16:00&quot;                &quot;woensdag 16 september, 01:34&quot;   
+##  [7] &quot;donderdag 17 september, 18:32&quot;   &quot;vrijdag 11 september, 13:57&quot;    
+##  [9] &quot;vrijdag 17 juli, 14:00&quot;          &quot;zondag 19 juli, 03:47&quot;          
+## [11] &quot;zondag 5 juli, 19:34&quot;            &quot;woensdag 29 april 2026, 23:01&quot;  
+## [13] &quot;zaterdag 7 maart 2026, 07:04&quot;    &quot;dinsdag 24 februari 2026, 12:46&quot;
+## [15] &quot;woensdag 11 maart 2026, 17:35&quot;   &quot;maandag 23 februari 2026, 20:01&quot;
+## [17] &quot;vrijdag 23 januari 2026, 16:11&quot;  &quot;donderdag 8 januari 2026, 01:23&quot;
+## [19] &quot;donderdag 8 januari 2026, 06:29&quot; &quot;dinsdag 9 december 2025, 16:56&quot;</code></pre>
 <pre class="r"><code>length(titel)</code></pre>
 <pre><code>## [1] 20</code></pre>
 <pre class="r"><code>length(data)</code></pre>
 <pre><code>## [1] 20</code></pre>
 <pre class="r"><code>length(link)</code></pre>
-<pre><code>## [1] 34</code></pre>
-<pre class="r"><code>info &lt;- tibble(titel, data, link[1:20])
+<pre><code>## [1] 20</code></pre>
+<pre class="r"><code>info &lt;- tibble(titel, data, link)
 
 information &lt;- info |&gt;
-  rename(Title = titel, Date = data, URL = `link[1:20]`) |&gt;
+  rename(Title = titel, Date = data, URL = link) |&gt;
   mutate(URL = paste0(&quot;https://nos.nl&quot;, URL))
 
 #print(information[,&quot;URL&quot;])
@@ -551,25 +543,26 @@ tibble(information)</code></pre>
 ##  2 &quot;Steeds meer Amerikaanse goede doelen vluchten naar Nederland om Trump&quot;               dond… http…
 ##  3 &quot;Moeders gaan meer verdienen als de vader met verlof gaat, toont nieuw onderzoek&quot;     maan… http…
 ##  4 &quot;Sportraad richt zich op één advies voor 2027: focus op positie van vrouwen in de sp… woen… http…
-##  5 &quot;Zevende dode vrouw gevonden bij Johannesburg, politie waarschuwt vrouwen&quot;            woen… http…
-##  6 &quot;Negende dode vrouw gevonden in Zuid-Afrika in dezelfde regio bij Johannesburg&quot;       dond… http…
-##  7 &quot;Italiaanse politica Emma Bonino overleden, voorvechter voor vrouwenrechten &quot;         vrij… http…
-##  8 &quot;Niet prinsessen maar geadopteerde mannen moeten Japans keizerlijk huis redden&quot;       vrij… http…
-##  9 &quot;Andrew Tate en broer aangehouden in Miami om verkrachting en geweld &quot;                zond… http…
-## 10 &quot;Franse rechtspraak worstelt met zaken over partnergeweld: &#39;Nog lange weg te gaan&#39;&quot;   zond… http…
-## 11 &quot;Pride Amsterdam genomineerd voor erfgoedlijst Unesco&quot;                                woen… http…
-## 12 &quot;Kabinetsplannen om ouderschapsverlof te versoberen &#39;stap terug voor gendergelijkhei… zate… http…
-## 13 &quot;Verenigde Naties willen dat Nederland meer voor vrouwen doet&quot;                        dins… http…
-## 14 &quot;Kamermeerderheid inclusief coalitiepartijen: toch geen versobering ouderschapsverlo… woen… http…
-## 15 &quot;Primeur in Formule 1: bocht bij GP Australië vernoemd naar vrouwelijke sleutelfigur… maan… http…
-## 16 &quot;Chinese vrouw nagelt vreemdgaande man aan schandpaal met &#39;excuusfilmpjes&#39;&quot;           vrij… http…
-## 17 &quot;VS trekt zich terug uit tientallen VN-organisaties&quot;                                  dond… http…
-## 18 &quot;Wekdienst 8/1: Kabinetsformatie gaat verder • Nieuwe zitting kunstroof Drents Museu… dond… http…
-## 19 &quot;Kamer: discriminatieverbod gaat boven onderwijsvrijheid&quot;                             dins… http…
-## 20 &quot;CBS: aantal vermoorde vrouwen door (ex-)partner blijft gelijk&quot;                       vrij… http…</code></pre>
+##  5 &quot;Verkiezing vervanger voor afzwaaiende VN-chef Guterres verloopt stroef&quot;              dond… http…
+##  6 &quot;Zevende dode vrouw gevonden bij Johannesburg, politie waarschuwt vrouwen&quot;            woen… http…
+##  7 &quot;Negende dode vrouw gevonden in Zuid-Afrika in dezelfde regio bij Johannesburg&quot;       dond… http…
+##  8 &quot;Italiaanse politica Emma Bonino overleden, voorvechter voor vrouwenrechten &quot;         vrij… http…
+##  9 &quot;Niet prinsessen maar geadopteerde mannen moeten Japans keizerlijk huis redden&quot;       vrij… http…
+## 10 &quot;Andrew Tate en broer aangehouden in Miami om verkrachting en geweld &quot;                zond… http…
+## 11 &quot;Franse rechtspraak worstelt met zaken over partnergeweld: &#39;Nog lange weg te gaan&#39;&quot;   zond… http…
+## 12 &quot;Pride Amsterdam genomineerd voor erfgoedlijst Unesco&quot;                                woen… http…
+## 13 &quot;Kabinetsplannen om ouderschapsverlof te versoberen &#39;stap terug voor gendergelijkhei… zate… http…
+## 14 &quot;Verenigde Naties willen dat Nederland meer voor vrouwen doet&quot;                        dins… http…
+## 15 &quot;Kamermeerderheid inclusief coalitiepartijen: toch geen versobering ouderschapsverlo… woen… http…
+## 16 &quot;Primeur in Formule 1: bocht bij GP Australië vernoemd naar vrouwelijke sleutelfigur… maan… http…
+## 17 &quot;Chinese vrouw nagelt vreemdgaande man aan schandpaal met &#39;excuusfilmpjes&#39;&quot;           vrij… http…
+## 18 &quot;VS trekt zich terug uit tientallen VN-organisaties&quot;                                  dond… http…
+## 19 &quot;Wekdienst 8/1: Kabinetsformatie gaat verder • Nieuwe zitting kunstroof Drents Museu… dond… http…
+## 20 &quot;Kamer: discriminatieverbod gaat boven onderwijsvrijheid&quot;                             dins… http…</code></pre>
+<pre class="r"><code>View(information)</code></pre>
 </div>
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIlpfaGFuZGlnaGVpZGplcyINCm91dHB1dDogaHRtbF9kb2N1bWVudA0KLS0tDQoNCiMjIFBERiB2ZXJzaW9uDQoNClw8aWZyYW1lIHNyYz0iUHJlc2VudGF0aW9ucy9zb2NpYWxuZXR3b3Jrc19wcmVzZW50YXRpb25fMS5wZGYiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjcwMHhwIiBzdHlsZT0iYm9yZGVyOm5vbmU7Ilw+DQoNClw8L2lmcmFtZVw+DQoNCjxicj4NCg0KIyMgR29vZ2xlIFNsaWRlcyB2ZXJzaW9uDQoNClw8aWZyYW1lIHNyYz0icGVyc29uYWwgbGluayIgZnJhbWVib3JkZXI9IjAiIHdpZHRoPSI5NjAiIGhlaWdodD0iNTY5IiBhbGxvd2Z1bGxzY3JlZW49InRydWUiIG1vemFsbG93ZnVsbHNjcmVlbj0idHJ1ZSIgd2Via2l0YWxsb3dmdWxsc2NyZWVuPSJ0cnVlIlw+DQoNClw8L2lmcmFtZVw+DQoNCjxicj4NCg0KIyMgV2Vic2NyYXBlbg0KDQpgYGB7cn0NCmxpYnJhcnkocnZlc3QpDQpsaWJyYXJ5KHRpZHl2ZXJzZSkNCg0KdXJsIDwtICJodHRwczovL25vcy5ubC96b2VrZW4/cT1nZW5kZXJnZWxpamtoZWlkJnBhZ2U9MSINCm5vcyA8LSByZWFkX2h0bWwodXJsKQ0Kbm9zDQoNCnRpdGVsIDwtIG5vcyB8Pg0KICBodG1sX2VsZW1lbnRzKCIua1lCcnJsIikgfD4NCiAgaHRtbF90ZXh0KCkNCnRpdGVsDQoNCmxpbmsgPC0gbm9zIHw+IGh0bWxfZWxlbWVudHMoIm1haW4iKSB8PiANCiAgaHRtbF9lbGVtZW50cygidWwiKSB8Pg0KICBodG1sX2VsZW1lbnRzKCJsaSIpIHw+DQogIGh0bWxfZWxlbWVudHMoImEiKSB8Pg0KICBodG1sX2F0dHIobmFtZSA9ICJocmVmIikNCmxpbmsNCg0KZGF0YSA8LSBub3MgfD4NCiAgaHRtbF9lbGVtZW50cygidGltZSIpIHw+DQogIGh0bWxfdGV4dCgpDQpkYXRhDQoNCmxlbmd0aCh0aXRlbCkNCmxlbmd0aChkYXRhKQ0KbGVuZ3RoKGxpbmspDQoNCmluZm8gPC0gdGliYmxlKHRpdGVsLCBkYXRhLCBsaW5rWzE6MjBdKQ0KDQppbmZvcm1hdGlvbiA8LSBpbmZvIHw+DQogIHJlbmFtZShUaXRsZSA9IHRpdGVsLCBEYXRlID0gZGF0YSwgVVJMID0gYGxpbmtbMToyMF1gKSB8Pg0KICBtdXRhdGUoVVJMID0gcGFzdGUwKCJodHRwczovL25vcy5ubCIsIFVSTCkpDQoNCiNwcmludChpbmZvcm1hdGlvblssIlVSTCJdKQ0KDQp0aWJibGUoaW5mb3JtYXRpb24pDQpgYGANCg==</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIlpfaGFuZGlnaGVpZGplcyINCm91dHB1dDogaHRtbF9kb2N1bWVudA0KLS0tDQoNCiMjIFBERiB2ZXJzaW9uDQoNClw8aWZyYW1lIHNyYz0iUHJlc2VudGF0aW9ucy9zb2NpYWxuZXR3b3Jrc19wcmVzZW50YXRpb25fMS5wZGYiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjcwMHhwIiBzdHlsZT0iYm9yZGVyOm5vbmU7Ilw+DQoNClw8L2lmcmFtZVw+DQoNCjxicj4NCg0KIyMgR29vZ2xlIFNsaWRlcyB2ZXJzaW9uDQoNClw8aWZyYW1lIHNyYz0icGVyc29uYWwgbGluayIgZnJhbWVib3JkZXI9IjAiIHdpZHRoPSI5NjAiIGhlaWdodD0iNTY5IiBhbGxvd2Z1bGxzY3JlZW49InRydWUiIG1vemFsbG93ZnVsbHNjcmVlbj0idHJ1ZSIgd2Via2l0YWxsb3dmdWxsc2NyZWVuPSJ0cnVlIlw+DQoNClw8L2lmcmFtZVw+DQoNCjxicj4NCg0KIyMgV2Vic2NyYXBlbg0KDQpgYGB7cn0NCmxpYnJhcnkocnZlc3QpDQpsaWJyYXJ5KHRpZHl2ZXJzZSkNCg0KdXJsIDwtICJodHRwczovL25vcy5ubC96b2VrZW4/cT1nZW5kZXJnZWxpamtoZWlkJnBhZ2U9MSINCm5vcyA8LSByZWFkX2h0bWwodXJsKQ0Kbm9zDQoNCnRpdGVsIDwtIG5vcyB8Pg0KICBodG1sX2VsZW1lbnRzKCIua1lCcnJsIikgfD4NCiAgaHRtbF90ZXh0KCkNCnRpdGVsDQoNCmxpbmsgPC0gbm9zIHw+IGh0bWxfZWxlbWVudHMoIm1haW4iKSB8PiANCiAgaHRtbF9lbGVtZW50KCJ1bCIpIHw+IA0KICBodG1sX2VsZW1lbnRzKCJsaSIpIHw+DQogIGh0bWxfZWxlbWVudHMoImEiKSB8Pg0KICBodG1sX2F0dHIobmFtZSA9ICJocmVmIikNCmxpbmsNCg0KZGF0YSA8LSBub3MgfD4NCiAgaHRtbF9lbGVtZW50cygidGltZSIpIHw+DQogIGh0bWxfdGV4dCgpDQpkYXRhDQoNCmxlbmd0aCh0aXRlbCkNCmxlbmd0aChkYXRhKQ0KbGVuZ3RoKGxpbmspDQoNCmluZm8gPC0gdGliYmxlKHRpdGVsLCBkYXRhLCBsaW5rKQ0KDQppbmZvcm1hdGlvbiA8LSBpbmZvIHw+DQogIHJlbmFtZShUaXRsZSA9IHRpdGVsLCBEYXRlID0gZGF0YSwgVVJMID0gbGluaykgfD4NCiAgbXV0YXRlKFVSTCA9IHBhc3RlMCgiaHR0cHM6Ly9ub3MubmwiLCBVUkwpKQ0KDQojcHJpbnQoaW5mb3JtYXRpb25bLCJVUkwiXSkNCg0KdGliYmxlKGluZm9ybWF0aW9uKQ0KVmlldyhpbmZvcm1hdGlvbikNCmBgYA0K</div>
 
 
 </div>

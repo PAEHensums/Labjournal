@@ -50,7 +50,7 @@ length(titel)
 length(data)
 length(link)
 
-info <- tibble(titel, data, link[1:20])
+info <- tibble(titel, data, link)
 
 information <- info |>
   rename(Title = titel, Date = data, URL = link) |>
