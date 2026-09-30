@@ -20,6 +20,8 @@ navbar:
         href: 30_lab3.html
       - text: "Week 4"
         href: 40_lab4.html
+      - text: "Week 5"
+        href: 50_lab5.html
     - text: "Final project"
       menu:
       - text: "Introduction"
@@ -28,11 +30,13 @@ navbar:
         href: B_theory.html
       - text: "Data"
         href: C_data.html
+      - text: "R"
+        href: Z_FinalProject.html
     - text: "Presentations"
       menu:
       - text: "Articles & Research questions"
         href: 1_presentation.html
-    - text: "Handigheidjes"
+    - text: "Stuff to share"
       href: Z_handigheidjes.html
 
   right:

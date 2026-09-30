@@ -4,6 +4,14 @@ output: html_document
 bibliography: references.bib
 ---
 
+# Introduction
+
+Loneliness among men on the rise
+
+Detrimental consequencies, e.g. suicide
+
+Does not remain limited to men, romantically centrered networks and emotional labour among women
+
 ## References
 
 @Borowski_2002

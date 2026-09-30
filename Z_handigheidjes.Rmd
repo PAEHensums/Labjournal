@@ -35,7 +35,7 @@ titel <- nos |>
 titel
 
 link <- nos |> html_elements("main") |> 
-  html_elements("ul") |>
+  html_element("ul") |> 
   html_elements("li") |>
   html_elements("a") |>
   html_attr(name = "href")
@@ -53,10 +53,11 @@ length(link)
 info <- tibble(titel, data, link[1:20])
 
 information <- info |>
-  rename(Title = titel, Date = data, URL = `link[1:20]`) |>
+  rename(Title = titel, Date = data, URL = link) |>
   mutate(URL = paste0("https://nos.nl", URL))
 
 #print(information[,"URL"])
 
 tibble(information)
+View(information)
 ```

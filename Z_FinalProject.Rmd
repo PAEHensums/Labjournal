@@ -1,0 +1,128 @@
+---
+title: "Z_FinalProject"
+output: html_document
+---
+
+# Final Project
+
+## Preliminary Steps
+
+```{r}
+# Empty working environment
+rm(list = ls())
+```
+
+### Packages
+
+```{r, warning = FALSE}
+packages <- c("sna","tidyverse","haven") # define which packages to use
+lapply(packages, require, character.only = TRUE) # check if installed
+# if installed: load
+# if not installed: install & load
+
+rm(packages) # remove the object 'packages' from the working environment
+# alternative: use remove()
+```
+
+### Load & Inspect the data
+
+```{r}
+# Load the RData object
+load("./data/fis-cuf.RData") # Two data objects: composition & survey 
+View(composition)# Identification numbers for class, student, wave
+View(survey) # Nominations for best friend, gender, native, GPA
+
+class(composition) # Type of object: tbl_df, tbl, dataframe
+class(survey) # Type of object: bl_df, tbl, dataframe
+
+glimpse(composition) # Inspect variables, class = dbl
+glimpse(survey) # Inspect variables, class = dbl
+
+#Q: Where are the rest of the variables, e.g. discuss emotional problems?
+```
+
+### Create Adjacency matrix
+
+```{r}
+# Adapted the FIS tutorial 'Example_6_1' (for creating a network plot)
+
+# FIS appraoch to loading the data:
+  #path_in <- "PATH_TO_DATA"
+  #fis.orig <- read_dta(paste(path_in,"/fis_long.dta",sep=""))
+  #fis.comp <- read_dta(paste(path_in,"/fis_composition.dta",sep=""))
+# Q: What's different compared to load()?
+
+# Specify the network Characteristics (here: best-friend nominations)
+netw <- c("a1_0101","a1_0102","a1_0103","a1_0104","a1_0105",
+          "a1_0106","a1_0107","a1_0108","a1_0109","a1_0110")
+
+# Specify Covariates (here: gender)
+cova <- c("ed_a6")
+
+# Specify Individual Identifier
+iden <- c("id_p")
+
+# Specify class and wave 
+w <- 1
+
+# Removed the class filter to fix an error below 
+# (but now we have a schoolwide adjacency matrix)
+#   c <- 1
+#   comp_w1c1 <- filter(composition, wave1 == w, id_c == c) %>%
+#     select(id_c, id_p, wave1)
+
+# Select participants from a single wave and a single class
+comp_w1 <- filter(composition, wave1 == w) %>%
+  select(id_c, id_p, wave1)
+  
+survey_w1 <- filter(survey, wave == w) %>%
+  select(iden, netw, cova, wave, id_c) %>% 
+  mutate(right = 1)
+
+#View(comp_w1c1)
+#View(survey_w1c1)
+
+FIS_combined <- left_join(comp_w1, survey_w1, by="id_p") %>% arrange(id_p)
+
+FIS <- select(FIS_combined, iden, netw)
+ids         <- unlist(select(FIS,"id_p")) # Extract all IDs
+ids.s       <- sort(ids) # Sorts unique IDs
+ids.tr      <- cbind(ids.s,1:length(ids)) # Generates matching IDs from 1 onwards
+
+miss.w <- ids[unlist(is.na(select(FIS_combined,right)))] # Q: what does this do?
+# Identifies respondent 6136 as 'not having nominated anyone' (NA in 'right')
+
+# Counts the number of unique IDs (N=31)
+f <- 0
+for (i in ids.s) {
+  f <- f + 1
+  FIS[FIS == i] <- f 
+}
+
+miss.w.tr <- ids.tr[,2][ids.s %in% miss.w] 
+# Identifies the third respondents as 'not having nominated anyone' (6136 = id_p3)
+
+edgelist <- cbind(unlist(FIS[, 1]), unlist(c(FIS[, -1]))) # Generate edgelist
+admatrix<- matrix(0,nrow=length(ids),ncol=length(ids))		# Generate empty adjacency matrix
+
+# Ran into an error: Error in `<current-expression>` : subscript out of bounds
+# Due to the prior selection of a single class, while students also nominated outsiders (out-of-classroom friends)
+
+# Potential problems in the edgelist:
+# The edgelist contains NA's (when the max nr. of nominations is not reached)
+# People from outside the classroom are nominated
+
+admatrix[edgelist] <- 1	    # Fill adjacency matrix
+admatrix[miss.w.tr,] <- NA 	# Fill missing actors with NAs
+
+View(admatrix)
+rowSums(admatrix) # maximum number of nominations tracks
+
+# To compare the adjacency matrix with the base information (survey)
+writexl::write_xlsx(survey, "survey.xlsx") # Save as a .xlsx file
+writexl::write_xlsx(survey_w1, "survey_w1.xlsx")
+
+# Transform to R adjacency matrix
+admatrix_r <- as.network(admatrix,
+                         matrix.type ="adjacency") 	
+```

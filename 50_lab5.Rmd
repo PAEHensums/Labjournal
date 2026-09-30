@@ -1,0 +1,95 @@
+---
+title: "50_lab5"
+output: html_document
+---
+
+# Week 5
+
+Van te voren je plot window definieren voordat je plots gaat maken! Consistent resultaat vereist plotwindow definitie, en dan plots opslaan als PNG en opnieuw inlezen (of andere exportatie)
+
+- Als directed in plotje, dan laten zien
+
+- Als niet belangrijk voor verhaal, dan undirected
+
+- Plotjes zijn bedoeld om een verhaal te vertellen, niet om je analyse/model te laten zien
+
+  - Je model toetst de hypothese die uit het verhaal volgt (geen perfecte match, maar wel aansluiten)
+
+- Als over de tijd
+
+  - Lay-out constant houden (zie hoofdstuk)
+
+  - Lay-out uit plot 1 constant houden voor lay-out 2 (zorg dat je dezelfde bolletjes hebt)
+
+- Altijd legenda toevoegen (apart plotten, dan ben je iets flexibeler)
+
+  - Nu legend in het figuur plotten, goed kijken waar precies
+
+- Betweenness eventueel normaliseren; wie is het meest centraal? Dus centraler, ten opzichte van anderen; niet hoe centraal is iemand (niet genormaliseerd)?
+
+- Moran's I (netwerksegregatie naar opleidingsscheidslijnen toegenomen of afgenomen?)
+
+- Eventueel kruis zetten door nodes die netwerk nog niet gejoined heeft, of het netwerk heeft verlaten
+
+- In paper benoemen hoeveel ties mogelijk zijn, en laten zien of die over het algemeen maximaal zijn (dus maximale degree is 5, en ook in RSiena opnemen)
+
+- Elke kleur heeft 4 waardes (RGB kleuren, 3 bepalen de kleur, 1 bepaalt de alpha (opaque)
+
+  - Deze waardes worden vertaald in HEX codes
+
+- Als je wilt dat de bolletjes nooit overlappen, maak 'm drie-dimensioneel
+
+  - Dan moet je uit igraph weggaan
+
+  - Bijvoorbeeld small-world plotje uit Jochem's boek
+
+- Tie betweenness, welke relatie zorgt ervoor dat je van de ene kant naar de andere kant kunt gaan? In plaats van welk bolletje
+
+- Gewoon dezelfde code meerdere keren runnen todat het preeeetty is :)
+
+```{r}
+rm(list = ls()) # empty environment
+
+# Load custom functions from Jochem
+fpackage.check <- function(packages) {
+  lapply(packages, FUN = function(x) {
+    if (!require(x, character.only = TRUE)) {
+      install.packages(x, dependencies = TRUE)
+      library(x, character.only = TRUE)
+    }
+  })
+}
+
+fsave <- function(x, file = NULL, location = "./data/processed/") {
+  ifelse(!dir.exists("data"), dir.create("data"), FALSE)
+  ifelse(!dir.exists("data/processed"), dir.create("data/processed"), FALSE)
+  if (is.null(file))
+    file = deparse(substitute(x))
+  datename <- substr(gsub("[:-]", "", Sys.time()), 1, 8)
+  totalname <- paste(location, datename, file, ".rda", sep = "")
+  save(x, file = totalname)  #need to fix if file is reloaded as input name, not as x. 
+}
+
+fload <- function(filename) {
+  load(filename)
+  get(ls()[ls() != "filename"])
+}
+
+fshowdf <- function(x, ...) {
+  knitr::kable(x, digits = 2, "html", ...) %>%
+    kableExtra::kable_styling(bootstrap_options = c("striped", "hover")) %>%
+    kableExtra::scroll_box(width = "100%", height = "300px")
+}
+
+colorize <- function(x, color) {
+  sprintf("<span style='color: %s;'>%s</span>", color, x)
+}
+
+# Check and load packages
+packages = c("RSiena", "devtools", "igraph")
+fpackage.check(packages)
+
+# devtools::install_github('JochemTolsma/RsienaTwoStep', build_vignettes=TRUE)
+packages = c("RsienaTwoStep")
+fpackage.check(packages)
+```
